@@ -11,7 +11,7 @@ function App() {
   const [dataAlustettu, setDataAlustettu] = useState([]);
   const [selectedExamNumber, setSelectedExamNumber] = useState(0);
   const [ret, setRet] = useState(false)
- // const [checked, setChecked] = useState([]);
+
 
  const [data, setData] = useState([
     {exam: "Exam 1",  questions:[ 
@@ -81,14 +81,6 @@ function App() {
     setData(deepCopy)
   }
 
-  /*   const optChange =(e, index) =>{
-    let deepCopy = JSON.parse(JSON.stringify(data));
-    deepCopy[[index].[index]].checked = e.target.checked;
-    setData(deepCopy);
-      
-  }
-   */
-
   const showAnswers = (item) => {
     setRet(true)
     }
@@ -97,17 +89,6 @@ function App() {
     setSelectedExamNumber(index)
   }
 
-  /* const showOptions = (opt) => {
-    return opt.map((item, index) => <div>
-      <input 
-        onChange={(e) => optChange(e, index)}
-        type="checkbox"
-        // checked = {item.checked}
-        name = {item.text}></input>
-        <label for={item.text}>{item.text}</label>
-    </div>
-    )
-  } */
   ;
 
   return (
