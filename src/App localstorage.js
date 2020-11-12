@@ -6,7 +6,6 @@ import ShowAnswers from './ShowAnswers'
 import { Container, Checkbox } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import axios from 'axios';
 
 import './App.css';
 
@@ -88,59 +87,20 @@ function App() {
 
   ])
 
-  useEffect(() => {
+useEffect(() => {
+  let jemma = window.localStorage;
+  let uusidata = jemma.getItem("data")
+  if (!uusidata) {
+    jemma.setItem("data", JSON.stringify(data))
+    uusidata = data
+  } else {
+    setData(JSON.parse(uusidata));
+  }
+}, [])
 
-    const createData = async() => {
-      
-      try {
-
-        let result = await axios.post("http://localhost:3001/exams", data)
-        setData(data)
-        setDataAlustettu(true)
-
-      } catch (exception) {
-        alert("Tietokannan alustaminen epäonnistui")
-      }
-    }
-
-    const fetchData = async () => {
-      try {
-        let result = await axios.get("http://localhost:3001/exams")
-        if (result.data.length > 0) {
-          setData(result.data);
-          setDataAlustettu(true)
-        } else {
-          throw ("Nyt pitää data kyllä alustaa!")
-        }
-      }
-      catch (exception) {
-        createData();
-        console.log(exception)
-      }
-    }
-    fetchData();
-  }, [])
-
-  useEffect(() => {
-    const updateData = async () => {
-      try {
-        let result = await axios.put("http://localhost:3001/exams", data)
-      } catch (exception) {
-        console.log("Datan päivitys ei onnistunut")
-      }
-    }
-  
-    if (dataAlustettu) {
-      updateData();
-    }
-  }, [data])
-   
-  //   if (dataAlustettu) {
-  //PUT
-  //     window.localStorage.setItem("data", JSON.stringify(data))
-  //   }
-  // }, [data])
-  //*/
+useEffect(() => {
+  window.localStorage.setItem("data", JSON.stringify(data))
+}, [data])
 
 const exams = () => {
   return <div className="main">
