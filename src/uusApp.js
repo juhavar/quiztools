@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import Questions from './Questions'
+
 import ShowAnswers from './ShowAnswers'
 import { Container, Checkbox } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -100,11 +100,11 @@ function App() {
             <div key={index} className="Card">
               <div className="Question" >{item.q}</div>
               {item.answers ? 
-              <Questions index={
-                index} examIndex={selectedExamNumber}
-                answers={item.answers} 
-                selectedAnswer={selectedAnswer}>
-              </Questions> : ""}
+              item.answers.map((i, answerIndex) =>
+              <div key={answerIndex}>
+                <label className="checkbox">
+                  <Checkbox /* type="checkbox" */ onChange={(e) => { selectedAnswer(e, index, data[selectedExamNumber], answerIndex) }}
+                    checked={i.checked} /><span>{i.a}</span></label></div>) : ""}
             </div>)
             :
             data[selectedExamNumber].questions.map((item, index) =>

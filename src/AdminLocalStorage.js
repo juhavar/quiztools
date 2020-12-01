@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
+
 import Answers from './Anwers'
 import AdminEdit from './AdminEdit'
 import ShowAnswers from './ShowAnswers'
 import { Container, Checkbox } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircle from '@material-ui/icons/AddCircle';
+import Card from '@material-ui/core/Card';
+
 
 import './App.css';
 
@@ -102,14 +105,14 @@ useEffect(() => {
   window.localStorage.setItem("data", JSON.stringify(data))
 }, [data])
 
-const exams = () => {
+/* const exams = () => {
   return <div className="main">
     {data.map((exam, index) =>
       <Button key={index}
         onClick={() => selectExam(index)}>
         {exam.exam}</Button>)}
 
-    <div className="askCards">
+    <div className="questions">
       {correctAnswersEnabled === false ? data[selectedExamNumber].questions.map((item, index) =>
         <div key={index} className="Card">
           <div className="Question" >{item.q}</div>
@@ -135,7 +138,7 @@ const exams = () => {
     </div>
   </div>
 
-}
+} */
 
 const selectExam = (index) => {
   setSelectedExamNumber(index)
@@ -160,23 +163,22 @@ const modeSetter = (mode) => {
 
 const admin = () => {
   return <div className="admin">
-        {data.map((exam, index) =>
-        <Button key={index}
+    {data.map((exam, index) =>
+      <Button key={index}
         onClick={() => selectExam(index)}>
-
         {exam.exam}</Button>)}
       
-
-      <div className="askCards">
+      <Card className="questions" variant="outlined">
         
         {data[selectedExamNumber].questions.map((question, qIndex) =>
           <div key={qIndex} className="Card">
             <div className="Question" >
-              <input type="text"
+              <Checkbox type="text"
                 onChange={(e) => questionChanged(e, selectedExamNumber, qIndex)}
-                defaultValue={question.q}></input>
-              <button onClick={(e) => deleteQuestion(e, selectedExamNumber, qIndex)}>-</button>
+                defaultValue={question.q}></Checkbox>
+              <DeleteIcon onClick={(e) => deleteQuestion(e, selectedExamNumber, qIndex)}></DeleteIcon>
             </div>
+            <Card>
             {question.answers ?
               <AdminEdit
                 index={qIndex}
@@ -188,21 +190,25 @@ const admin = () => {
                 deleteAnswer = {deleteAnswer}
                 >
               </AdminEdit> : ""}
-            
+              <AddCircle onClick={() => addQuestion(selectedExamNumber)}></AddCircle>   
+              </Card>
           </div>
+          
           )
+              
+        }
+        <div><button onClick={() => addExam()}>+ tentti</button></div>
 
-        }<div><button onClick={() => addExam()}>+</button></div>
-
-      </div>
+      </Card>
 
     </div>
 }
 
-const addExam = () => {
+const addQuestion = (eIndex) => {
   let deepCopy = JSON.parse(JSON.stringify(data))
-  let newQuestion = {exam: selectedExamNumber, questions: "", answers: [{ a: "", checked: false, correctAnswer: false }]};
-  deepCopy.push(newQuestion);
+  let newQuestion = {q: "", answers: [{ a: "", checked: false, correctAnswer: false }]};
+  console.log(deepCopy)
+  deepCopy[eIndex].questions.push(newQuestion);
   setData(deepCopy);
 }
 
@@ -236,14 +242,6 @@ const answerChanged = (e, qIndex, eIndex, aIndex) => {
   setData(deepCopy)
 }
 
-const selectedCorrectAnswer = (event, qIndex, eIndex, aIndex) => {
-  let deepCopy = JSON.parse(JSON.stringify(data))
-  console.log(deepCopy)
-  deepCopy[eIndex].questions[qIndex].answers[aIndex].correctAnswer = event.target.correctAnswer
-  console.log(deepCopy)
-  setData(deepCopy)
-}
-
 const deleteAnswer = (e, eIndex, qIndex, aIndex) => {
   let deepCopy = JSON.parse(JSON.stringify(data))
   deepCopy[eIndex].questions.[qIndex].answers.[aIndex].a = e.target.value;
@@ -252,6 +250,20 @@ const deleteAnswer = (e, eIndex, qIndex, aIndex) => {
   setData(deepCopy);
 }
 
+const selectedCorrectAnswer = (event, qIndex, eIndex, aIndex) => {
+  let deepCopy = JSON.parse(JSON.stringify(data))
+  console.log(deepCopy)
+  deepCopy[eIndex].questions[qIndex].answers[aIndex].correctAnswer = event.target.correctAnswer
+  console.log(deepCopy)
+  setData(deepCopy)
+}
+
+const addExam = () => {
+  let deepCopy = JSON.parse(JSON.stringify(data))
+  let newExam = {exam: "uusi", questions: [{q: "", answers: [{ a: "", checked: false, correctAnswer: false }]}]};
+  deepCopy.push(newExam);
+  setData(deepCopy);
+}
 
   ;
 
@@ -265,7 +277,7 @@ return (
       </nav>
     </header>
 
-    <div>{adminMode ? admin() : exams()}</div>
+    <div className="admin">{admin() }</div>
 
 
   </div>

@@ -1,13 +1,25 @@
 import React, { useEffect, useState, useReducer } from 'react';
 import Answers from './Answers'
-//import AdminEdit from './AdminEdit'
+import AdminEdit from './AdminEdit'
 import ShowAnswers from './ShowAnswers'
 import { Container, Checkbox } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircle from '@material-ui/icons/AddCircle';
 import Card from '@material-ui/core/Card';
-import uuid from 'react-uuid';
+import TextField from '@material-ui/core/TextField';
+
+
+import Paper from '@material-ui/core/Paper';
+import {
+    Chart,
+    BarSeries,
+    Title,
+    ArgumentAxis,
+    ValueAxis,
+  } from '@devexpress/dx-react-chart-material-ui';
+  
+  import { Animation } from '@devexpress/dx-react-chart';
 
 
 import './App.css';
@@ -15,7 +27,6 @@ import './App.css';
 function reducer(state, action) {
   let deepCopy = JSON.parse(JSON.stringify(state))
   switch (action.type) {
-    
 
     case 'addQuestion':
       let newQuestion = { q: "", answers: [{ a: "", checked: false, correctAnswer: false }] };
@@ -45,9 +56,9 @@ function reducer(state, action) {
       deepCopy[action.data.selectedExamNumber].questions[action.data.qIndex].answers.splice(action.data.aIndex, 1);
       return deepCopy;
 
-    case 'selectedAnswer':
-      deepCopy[action.data.selectedExamNumber].questions[action.data.qIndex].answers.checked = action.data.checked;
-      return deepCopy;
+/*     case 'chartDataChange':
+      deepCopy[0].oikein = action.data.newChartValue;
+      return deepCopy; */
 
     case 'initData':
       return action.data;
@@ -59,134 +70,131 @@ function reducer(state, action) {
 function App() {
 
   const [dataAlustettu, setDataAlustettu] = useState([]);
-  const [selectedExamNumber, setSelectedExamNumber] = useState(-1);
+  const [selectedExamNumber, setSelectedExamNumber] = useState(0);
   const [correctAnswersEnabled, setcorrectAnswersEnabled] = useState(false);
   const [adminMode, setAdminMode] = useState(0);
+  const [state, dispatch] = useReducer(reducer, []);
+  //const [chartData, setChartData] = useState([]);
 
-  const [data, setData] = useState([]);
-
+/*   const [chartData, setChartData] =useState( [
+    { kysymys: '1', oikein: 0 },
+    { kysymys: '2', oikein: 10 },
+    { kysymys: '3', oikein: 100 },
   
-  const examsList = [
-    {uid: uuid(), name:"Aku Ankka", exam: "Aku Ankka", questions: [
-        
-          {uid: uuid(), q: "Rahat vai kolmipyörä?",
+  ]) */
+
+  const [data, setData] = useState([
+    {
+      exam: "Aku Ankka", questions: [
+        {
+          q: "Rahat vai kolmipyörä?",
 
           answers: [
-            {uid: uuid(), a: "Rahat", checked: false, correctAnswer: false, wasAnswerCorrect: false },
-            {uid: uuid(), a: "Kolmipyörä", checked: false, correctAnswer: true, wasAnswerCorrect: false },
+            { a: "Rahat", checked: false, correctAnswer: false, wasAnswerCorrect: false },
+            { a: "Kolmipyörä", checked: false, correctAnswer: true, wasAnswerCorrect: false },
           ]
-        },
-        {uid: uuid(), q: "Akun veljenpojat?",
-          answers: [
-            {uid: uuid(), a: "Tupu", checked: false, correctAnswer: true },
-            {uid: uuid(), a: "Hupu", checked: false, correctAnswer: true },
-            {uid: uuid(), a: "Lupu", checked: false, correctAnswer: true }]
         },
         {
-          uid: uuid(),q: "Elämme...",
+          q: "Akun veljenpojat?",
           answers: [
-            {uid: uuid(), a: "yhteiskunnassa", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "kovia aikoja, ystävä hyvä.", checked: false, correctAnswer: true }]
+            { a: "Tupu", checked: false, correctAnswer: true },
+            { a: "Hupu", checked: false, correctAnswer: true },
+            { a: "Lupu", checked: false, correctAnswer: true }]
+        },
+        {
+          q: "Elämme...",
+          answers: [
+            { a: "yhteiskunnassa", checked: false, correctAnswer: false },
+            { a: "kovia aikoja, ystävä hyvä.", checked: false, correctAnswer: true }]
         }
       ]
     },
 
-    {uid: uuid(),
+    {
       exam: "Jalkapallo", questions: [
-        {uid: uuid(),
+        {
           q: "Jari Litmasen pituus?",
           answers: [
-            {uid: uuid(), a: "178 cm", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "180 cm", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "182 cm", checked: false, correctAnswer: true }
+            { a: "178 cm", checked: false, correctAnswer: false },
+            { a: "180 cm", checked: false, correctAnswer: false },
+            { a: "182 cm", checked: false, correctAnswer: true }
           ]
         },
-        {uid: uuid(),
+        {
           q: "Nouseeko Haka?",
           answers: [
-            {uid: uuid(), a: "Kyllä", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "Ei", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "Nousi jo", checked: false, correctAnswer: true }]
+            { a: "Kyllä", checked: false, correctAnswer: false },
+            { a: "Ei", checked: false, correctAnswer: false },
+            { a: "Nousi jo", checked: false, correctAnswer: true }]
         }
       ]
     },
-    {uid: uuid(),
+    {
       exam: "Ruoka", questions: [
-        {uid: uuid(),
+        {
           q: "Hyvän leivän raaka-aineet?",
           answers: [
-            {uid: uuid(), a: "Vettä", checked: false, correctAnswer: true },
-            {uid: uuid(), a: "Jauhoja", checked: false, correctAnswer: true },
-            {uid: uuid(), a: "Hiivaa", checked: false, correctAnswer: true },
-            {uid: uuid(), a: "Pieniä kiviä", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "Öljyä", checked: false, correctAnswer: true }
+            { a: "Vettä", checked: false, correctAnswer: true },
+            { a: "Jauhoja", checked: false, correctAnswer: true },
+            { a: "Hiivaa", checked: false, correctAnswer: true },
+            { a: "Pieniä kiviä", checked: false, correctAnswer: false },
+            { a: "Öljyä", checked: false, correctAnswer: true }
           ]
         },
-        {uid: uuid(),
+        {
           q: "Onko nälkä?",
           answers: [
-            {uid: uuid(), a: "Ehkä", checked: false, correctAnswer: false },
-            {uid: uuid(), a: "Ei vielä", checked: false, correctAnswer: false }
+            { a: "Ehkä", checked: false, correctAnswer: false },
+            { a: "Ei vielä", checked: false, correctAnswer: false }
           ]
         }]
 
     }
 
-  ]
-
-  const [state, dispatch] = useReducer(reducer, examsList);
+  ])
 
   useEffect(() => {
     let jemma = window.localStorage;
     let uusidata = jemma.getItem("data")
-    if (uusidata == null) {
-      jemma.setItem("data", JSON.stringify(examsList))
-      uusidata = examsList
+    if (!uusidata) {
+      jemma.setItem("data", JSON.stringify(data))
+      uusidata = data
     } else {
       setData(JSON.parse(uusidata));
-      setDataAlustettu(true);
     }
   }, [])
 
   useEffect(() => {
-    if (dataAlustettu) {
-      window.localStorage.setItem("data", JSON.stringify(state))
-    }
-  }, [state])
+    window.localStorage.setItem("data", JSON.stringify(data))
+  }, [data])
 
   const exams = () => {
     return <div className="main">
-      {state.map((exam, index) =>
+      {data.map((exam, index) =>
         <Button key={index}
           onClick={() => selectExam(index)}>
           {exam.exam}</Button>)}
 
-      <div >
-        {state[selectedExamNumber] !== undefined} ?
-        {correctAnswersEnabled === false ? state[selectedExamNumber].questions.map((item, index) =>
+      <div className="questions">
+        {correctAnswersEnabled === false ? data[selectedExamNumber].questions.map((item, index) =>
           <div key={index} className="Card">
             <div className="Question" >{item.q}</div>
             {item.answers ?
               <Answers
-                dispatch={dispatch}
-                examIndex={state[selectedExamNumber]}
-                answers = {item.answers}
-                /* selectedAnswer = {selectedAnswer} */
-                /* index={index}
+                index={index}
                 examIndex={selectedExamNumber}
                 answers={item.answers}
-                selectedAnswer={selectedAnswer}*/
-                > 
+                selectedAnswer={selectedAnswer}>
               </Answers> : ""}
           </div>)
           :
-          state[selectedExamNumber].questions.map((item, index) =>
+          data[selectedExamNumber].questions.map((item, index) =>
             <div key={index} className="Card">
               <div className="Question" >{item.q}</div>
               {item.answers ?
                 <ShowAnswers index={index}
                   checked={data.checked} answers={item.answers}
-                  /* selectedAnswer={selectedAnswer} */>
+                  selectedAnswer={selectedAnswer}>
                 </ShowAnswers> : ""}
             </div>)}
         {<Button className="showbutton" onClick={setCorrectAnswerstoEnabled}>Näytä Vastaukset</Button>}
@@ -199,14 +207,97 @@ function App() {
     setSelectedExamNumber(index)
   }
 
-/*   const selectedAnswer = (event, qIndex, eIndex, aIndex) => {
+  const selectedAnswer = (event, qIndex, eIndex, aIndex) => {
     let deepCopy = JSON.parse(JSON.stringify(data))
 //    console.log(deepCopy)
     deepCopy[eIndex].questions[qIndex].answers[aIndex].checked = event.target.checked
     setData(deepCopy)
-  } */
+  }
 
 
+
+  const [chartData,setChartData] = useState([
+    { aihealue: 'ATK:n perusteet', Points: 5, MaxPoints: 10, Percentage: 50 },
+    { aihealue: 'Biologian alkeet', Points: 2, MaxPoints: 10, Percentage: 20 },
+    { aihealue: 'Matikkan lopputentti', Points: 10, MaxPoints: 10, Percentage: 100 },
+    { aihealue: 'Kemian pääsykoe', Points: 8, MaxPoints: 10,Percentage: 80 },
+    { aihealue: 'Biologian jatkoa ', Points: 5, MaxPoints: 10,Percentage: 50 },
+    { aihealue: 'Terveystiedon alkeet', Points: 9, MaxPoints: 10,Percentage: 90},
+  ]);
+  const numberChange = (event, index) => {
+    console.log(event.target.value)
+    console.log(index)
+    var newNumber = event.target.value;
+    var dataCopy = [...chartData]
+    dataCopy[index].Points = newNumber;
+    dataCopy[index].Percentage = newNumber/dataCopy[index].MaxPoints*100
+    setChartData(dataCopy)
+  }
+  const maxPointChange = (event, index) => {
+    console.log(event.target.value)
+    console.log(index)
+    var newNumber = event.target.value;
+    var dataCopy = [...chartData]
+    dataCopy[index].MaxPoints = newNumber;
+    dataCopy[index].Percentage = dataCopy[index].Points/newNumber*100
+    setChartData(dataCopy)
+  }
+
+  const feedback = () => {
+    
+  return( 
+    <div><Paper>
+    {chartData.map((value, index) => {
+            return (
+              <div>
+              <TextField
+                id="Points"
+                label={value.aihealue}
+                type="number"
+                value={value.Points}
+                onChange={(event)=> numberChange(event, index)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                id="MaxPoints"
+                label="maksimipisteet"
+                type="number"
+                value={value.MaxPoints}
+                onChange={(event)=> maxPointChange(event, index)}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              </div>)
+          })}
+        <Chart
+          data={chartData}
+        >
+          <ArgumentAxis />
+          <ValueAxis max={3} />
+          <BarSeries
+            valueField="Points"
+            argumentField="aihealue"
+          />
+          <Title text="Testipisteet Aihealueet" />
+          <Animation />
+        </Chart>
+        <Chart
+          data={chartData}
+        >
+          <ArgumentAxis />
+          <ValueAxis max={3} />
+          <BarSeries
+            valueField="Percentage"
+            argumentField="aihealue"
+          />
+          <Title text="Testi pisteprosentit" />
+          <Animation />
+        </Chart>
+        </Paper></div>)
+}
   const setCorrectAnswerstoEnabled = () => {
     setcorrectAnswersEnabled(true);
 
@@ -221,15 +312,15 @@ function App() {
 
   const admin = () => {
     return <div className="admin">
-      {state.map((exam, index) =>
-        <Button key={exam.uid}
+      {data.map((exam, index) =>
+        <Button key={index}
           onClick={() => selectExam(index)}>
           {exam.exam}</Button>)}
 
       <Card className="questions" variant="outlined">
 
-        {state[selectedExamNumber].questions.map((question, qIndex) =>
-          <div key={qIndex.uid} className="Card">
+        {data[selectedExamNumber].questions.map((question, qIndex) =>
+          <div key={qIndex} className="Card">
             <div className="Question" >
               <Checkbox type="text"
                 onChange={(e) =>
@@ -237,7 +328,7 @@ function App() {
                     type: 'questionChanged',
                     data: { selectedExamNumber: selectedExamNumber, qIndex: qIndex, newQtext: e.target.value }
                   })}
-                value={question.q}></Checkbox>
+                defaultValue={question.q}></Checkbox>
               <DeleteIcon onClick={(e) => dispatch({
                 type: 'deleteQuestion',
                 data: { selectedExamNumber: selectedExamNumber, qIndex: qIndex }
@@ -315,7 +406,7 @@ return (
     </header>
 
     <div>{adminMode ? admin() : exams()}</div>
-    
+    <div>{correctAnswersEnabled ? feedback() : ""} </div>
   </div>
 );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-
+import Checkbox from '@material-ui/core/Checkbox'
+import { green } from '@material-ui/core/colors';
 function ShowAnswers(props, event) {
 
     if (props.checked===props.correctAnswer){
@@ -7,12 +8,12 @@ function ShowAnswers(props, event) {
      }  
       return (<div>
         {props.answers.map((i, answerIndex) => 
-        <div  key={answerIndex}>
+        <div key={answerIndex}>
           <label className="checkbox">
-            <input type="checkbox" checked={i.checked} disabled/>
+            <Checkbox type="checkbox" checked={i.checked} disabled/>
             <span>{i.a}</span></label>
             <label className="checkboxRightAns" >
-              <input type="checkbox" checked={i.correctAnswer}/><span>
+              <Checkbox type="checkbox" checked={i.correctAnswer}/><span>
                 {i.a}</span></label></div>)}
         </div>
           
