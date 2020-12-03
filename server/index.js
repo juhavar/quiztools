@@ -73,7 +73,18 @@ app.get('/tentit/:id', (req, res, next) => {
   })
 })
 
-// hakee tentin kysymykset (ok)
+// hakee kaikki kysymykset
+app.get('/kysymykset/', (req, res, next) => {
+  db.query('SELECT * FROM kysymykset', (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    console.log(result.rows)
+    res.send(result.rows)
+  })
+})
+
+// hakee tentin kysymykset
 app.get('/kysymykset/:id', (req, res, next) => {
   console.log(req.params.id)
   db.query('SELECT * FROM kysymykset WHERE tentti_id = $1', [req.params.id], (err, result) => {
@@ -99,8 +110,8 @@ app.get('/vastaukset/:id', (req, res, next) => {
 //------------- M U O K K A U K S E T
 // Tentin nimen muokkaus (ok)
 
-app.put('/muokkaatentti/:id/:uusnimi', (req, res, next) =>{
-  db.query('UPDATE tentit SET nimi=$2 WHERE id=$1', [req.params.id, req.params.uusnimi], (err, result) => {
+app.put('/muokkaatentti/:id/:uusinimi', (req, res, next) =>{
+  db.query('UPDATE tentit SET nimi=$2 WHERE id=$1', [req.params.id, req.params.uusinimi], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -110,10 +121,10 @@ app.put('/muokkaatentti/:id/:uusnimi', (req, res, next) =>{
 
 })
 
-// Kysymyksen muokkaus (ok)
+// Kysymyksen tekstin muokkaus (ok)
 
-app.put('/muokkaakysymys/:id/:uuskysymys', (req, res, next) =>{
-  db.query('UPDATE kysymykset SET teksti=$2 WHERE id=$1', [req.params.id, req.params.uuskysymys], (err, result) => {
+app.put('/muokkaakysymys/:id/:uusikysymysteksti', (req, res, next) =>{
+  db.query('UPDATE kysymykset SET teksti=$2 WHERE id=$1', [req.params.id, req.params.uusikysymysteksti], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -139,55 +150,38 @@ app.put('/muokkaavastaus/:id/:kysymys_id/:vastaus_id/:vastausteksti/:oikein', (r
 })
 
 //------------- P O I S T O T
-// jatkuu tästä
 
-app.post('/poistatentti', (req, res) => {
+app.delete('/poistatentti/:id', (req, res, next) => {
   
-  console.log(req.body)
-  res.send('Tähän tulee sitten dataa tietokannasta tai jotain muuta')
+  db.query('DELETE FROM tentit WHERE id=$1', [req.params.id], (err, result) => {
+  if (err) {
+    return next(err)
+  }
+  res.send('Tentti poistettu')
+})
 })
 
-// lisäys
-/* app.post('/', (req, res, next) => {
-  const body = req.body
-  console.log(body)
+app.delete('/poistakysymys/:id', (req, res, next) => {
   
-  if (!res.body)
-    return res.status(400).json({
-      error: "Tieto puuttuu"
-    })
-  
-  db.query('INSERT INTO tentit(nimi) VALUES (hei)', [body.tentit], (err, result) =>{
-    if (err)
-      return next(err)
-  res.send(result.rows)
-  })
+  db.query('DELETE FROM kysymykset WHERE id=$1', [req.params.id], (err, result) => {
+  if (err) {
+    return next(err)
+  }
+  res.send('Kysymys poistettu')
 })
-app.post('/lisaatentti', (req, res, next) => {
-  const body = req.body
-  console.log(body)
-  
-/*   if (!res.body)
-    return res.status(400).json({
-      error: "Tieto puuttuu"
-    })
-   */
-/*   db.query(`INSERT INTO tentit(nimi) VALUES ('body')`, [body.tentit], (err, result) =>{
-    if (err)
-      return next(err)
-    else {
-      console.log('?')
-      return res.json({
-        data: result
-      })
-    }
-  }) */
-//}) */
-app.post('/haekaikkitentit', (req, res) => {
-  
-  console.log(req.body)
-  res.send('Tähän tulee sitten dataa tietokannasta tai jotain muuta')
 })
+
+app.delete('/poistavastaus/:id', (req, res, next) => {
+  
+  db.query('DELETE FROM vastaukset WHERE id=$1', [req.params.id], (err, result) => {
+  if (err) {
+    return next(err)
+  }
+  res.send('Vastaus poistettu')
+})
+})
+
+
 app.listen(port, () => {
     console.log("Palvelin käynnistyi portissa: " + port)
 })
