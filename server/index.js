@@ -7,20 +7,26 @@ module.exports = app
 var port = process.env.PORT || 5000
 app.use(bodyParser.json())
 //https://expressjs.com/en/resources/middleware/cors.html
-app.use(cors())
+// pelkkä localhost:3000 läpi
+app.use(cors({
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 }))
 const db = require('./db')
+
+
 
 //------------- L U O M I S E T
 
 // luodaan tentti (ok)
 
 app.post('/lisaatentti/:nimi', (req, res, next) => {
-  db.query('INSERT INTO tentit(nimi) VALUES ($1)',
-    [req.params.nimi], (err) => {
+  db.query('INSERT INTO tentit(nimi) VALUES ($1) RETURNING id',
+    [req.params.nimi], (result, err) => {
       if (err) {
         return next(err)
       }
-      res.send("Tentin lisäys ok.")
+      console.log(result)
+      res.send(result.rows[0].id)
     })
 
 })
@@ -38,7 +44,7 @@ app.post('/lisaakysymys/:tentti_id/:teksti', (req, res, next) => {
 
 })
 
-// luodaan vastaus (toimii)
+// luodaan vastaus
 
 app.post('/lisaavastaus/:tentti_id/:kysymys_id/:vastausteksti/:oikein', (req, res, next) => {
   db.query('INSERT INTO vastaukset(tentti_id, kysymys_id, vastausteksti, oikea) VALUES ($1, $2, $3, $4)',
@@ -85,9 +91,9 @@ app.get('/kysymykset/', (req, res, next) => {
 })
 
 // hakee tentin kysymykset
-app.get('/kysymykset/:id', (req, res, next) => {
+app.get('/kysymykset/:tentti_id', (req, res, next) => {
   console.log(req.params.id)
-  db.query('SELECT * FROM kysymykset WHERE tentti_id = $1', [req.params.id], (err, result) => {
+  db.query('SELECT * FROM kysymykset WHERE tentti_id = $1', [req.params.tentti_id], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -97,8 +103,8 @@ app.get('/kysymykset/:id', (req, res, next) => {
 })
 
 // hakee kysymykseen vastausvaihtoehdot (ok)
-app.get('/vastaukset/:id', (req, res, next) => {
-  db.query('SELECT * FROM vastaukset WHERE kysymys_id = $1', [req.params.id], (err, result) => {
+app.get('/vastaukset/:kysymys_id', (req, res, next) => {
+  db.query('SELECT * FROM vastaukset WHERE kysymys_id = $1', [req.params.kysymys_id], (err, result) => {
     if (err) {
       return next(err)
     }
