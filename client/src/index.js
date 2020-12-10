@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App'
-import tentit from './Tentit'
-import kysymykset from './Kysymykset'
+// import tentit from './Tentit'
+// import kysymykset from './Kysymykset'
 /* import AppJSONserver from './AppJSONserver'
 import AppLocalStorage from './AppLocalStorage';
 import LocalStorageChartDemo from './LocalStorageChartDemo'

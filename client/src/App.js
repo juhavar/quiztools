@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Container, Checkbox } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import './App.css';
+// import Tentit from 'user/Tentit.js'
 import Tentit from './Tentit.js'
 import axios from 'axios';
 
@@ -135,24 +136,20 @@ return (
       <Router>
         <div>
           <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/tentit">Tentit</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
-              </li>
-            </ul>
+            
+              
+                <Button component={Link} to="/" >Home</Button>
+                <Button component={Link} to='/tentit'>Tentit</Button>
+                <Button component={Link} to='/login' >Kirjaudu</Button>
+              
+            
           </nav>
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/about">
-              <About />
+            <Route path="/login">
+              <Login />
             </Route>
             <Route path="/tentit">
               <Tentit />
@@ -179,9 +176,11 @@ function Home() {
   return null;
 }
 
-function About() {
+function Login() {
   
-  return <div></div>
+  return <div><p><input value="käyttäjätunnus"></input></p>
+  
+    <p><input value="salasana"></input></p></div>
    
   
   

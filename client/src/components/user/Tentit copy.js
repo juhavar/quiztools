@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import uuid from 'react-uuid';
 import axios from 'axios';
 import Kysymykset from './Kysymykset'
 import {
@@ -31,16 +30,14 @@ import {
       if (exam.length < 1)
         return <>loading...</>
       return (
-        <div className = "Exam-list">
+        <div className = "Exam list">
             <div>
       {exam.map((item, index) =>
     
-        <Button component={Link} to={`${url}/${item.id}`} key={uuid()} color="primary"
+        <Button component={Link} to={`${url}/${item.id}`} key={index} color="primary"
         onClick={() => setExamID(item.id)} >
                 {item.nimi}</Button>
         )}
-        <Button color="primary"
-                onClick={() => null}>+</Button>
         </div>
         
         <Switch>

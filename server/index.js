@@ -13,6 +13,10 @@ app.use(cors({
   optionsSuccessStatus: 200 }))
 const db = require('./db')
 
+app.use('/paljokello', function (req, res, next) {
+  console.log('Kello on:', Date.now())
+  next()
+})
 
 
 //------------- L U O M I S E T
@@ -34,12 +38,13 @@ app.post('/lisaatentti/:nimi', (req, res, next) => {
 // luodaan kysymys (ehkä ok)
 
 app.post('/lisaakysymys/:tentti_id/:teksti', (req, res, next) => {
-  db.query('INSERT INTO kysymykset(tentti_id, teksti) VALUES ($1, $2)',
+  db.query('INSERT INTO kysymykset(tentti_id, teksti) VALUES ($1, $2) RETURNING id',
     [req.params.tentti_id, req.params.teksti], (err) => {
       if (err) {
         return next(err)
       }
       res.send("Kysymyksen lisäys ok.")
+      console.log("Lisätty kys")
     })
 
 })
@@ -66,6 +71,7 @@ app.get('/tentit/', (req, res) => {
       return res.send(err)
     }
     res.send(result.rows)
+   
   })
 })
 
@@ -76,6 +82,7 @@ app.get('/tentit/:id', (req, res, next) => {
       return next(err)
     }
     res.send(result.rows[0])
+    console.log(result.rows[0])
   })
 })
 
@@ -129,13 +136,15 @@ app.put('/muokkaatentti/:id/:uusinimi', (req, res, next) =>{
 
 // Kysymyksen tekstin muokkaus (ok)
 
-app.put('/muokkaakysymys/:id/:uusikysymysteksti', (req, res, next) =>{
-  db.query('UPDATE kysymykset SET teksti=$2 WHERE id=$1', [req.params.id, req.params.uusikysymysteksti], (err, result) => {
+app.put('/muokkaakysymys/:tentti_id/:kysymys_id/:uusikysymysteksti', (req, res, next) =>{
+  db.query('UPDATE kysymykset SET teksti=$3 WHERE tentti_id=$1 AND id=$2',
+   [req.params.tentti_id, req.params.kysymys_id, req.params.uusikysymysteksti], (err, result) => {
     if (err) {
       return next(err)
     }
     
     res.send("Kysymyksen muokkaus ok.")
+    console.log("kys muks ok")
   })
 
 })
@@ -149,7 +158,7 @@ app.put('/muokkaavastaus/:id/:kysymys_id/:vastaus_id/:vastausteksti/:oikein', (r
     if (err) {
       return next(err)
     }
-    console.log(result.rows)
+    console.log("vastauksen muoks ok")
     res.send("Vastauksen muokkaus ok.")
   })
 
