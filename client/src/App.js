@@ -13,6 +13,8 @@ import Button from '@material-ui/core/Button';
 import './App.css';
 // import Tentit from 'user/Tentit.js'
 import Tentit from './Tentit.js'
+import Register from './Register.js'
+import Login from './Login.js'
 import axios from 'axios';
 
 function App() {
@@ -141,6 +143,7 @@ return (
                 <Button component={Link} to="/" >Home</Button>
                 <Button component={Link} to='/tentit'>Tentit</Button>
                 <Button component={Link} to='/login' >Kirjaudu</Button>
+                <Button component={Link} to='/register'>Rekisteröidy</Button>
               
             
           </nav>
@@ -148,6 +151,9 @@ return (
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
+          <Route path="/register">
+              <Register />
+            </Route>
             <Route path="/login">
               <Login />
             </Route>
@@ -176,15 +182,7 @@ function Home() {
   return null;
 }
 
-function Login() {
-  
-  return <div><p><input value="käyttäjätunnus"></input></p>
-  
-    <p><input value="salasana"></input></p></div>
-   
-  
-  
-;}
+
 
 function Users() {
   return <h2>Users</h2>;

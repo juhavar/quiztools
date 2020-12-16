@@ -1,22 +1,33 @@
 var express = require("express")
 var cors = require("cors")
 var bodyParser = require("body-parser")
- 
+require('./auth/auth');
+
 var app = express()
 module.exports = app
 var port = process.env.PORT || 5000
 app.use(bodyParser.json())
+
+const db = require('./db')
+
+const routes = require('./routes/routes');
+//const secureRoute = require('/routes/secure-routes')
+
 //https://expressjs.com/en/resources/middleware/cors.html
 // pelkkä localhost:3000 läpi
 app.use(cors({
   origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 }))
-const db = require('./db')
+
+app.use('/', routes)
+//app.use('/', auth.authenticate('jwt', { session: false}), secureRoute);
+
 
 app.use('/paljokello', function (req, res, next) {
   console.log('Kello on:', Date.now())
   next()
 })
+
 
 
 //------------- L U O M I S E T
@@ -86,16 +97,7 @@ app.get('/tentit/:id', (req, res, next) => {
   })
 })
 
-// hakee kaikki kysymykset
-app.get('/kysymykset/', (req, res, next) => {
-  db.query('SELECT * FROM kysymykset', (err, result) => {
-    if (err) {
-      return next(err)
-    }
-    console.log(result.rows)
-    res.send(result.rows)
-  })
-})
+
 
 // hakee tentin kysymykset
 app.get('/kysymykset/:tentti_id', (req, res, next) => {

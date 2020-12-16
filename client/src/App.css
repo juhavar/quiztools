@@ -58,6 +58,14 @@
 .Answer-list {
   padding:25px;
 }
+.Register {
+  padding-top:25px;
+  padding-left:100px;
+}
+.Login {
+  padding-top:25px;
+  padding-left:100px;
+}
 nav {
   background-color: rgb(86, 86, 199);
   padding-top: 25px;
