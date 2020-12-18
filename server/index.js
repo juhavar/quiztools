@@ -1,7 +1,7 @@
 var express = require("express")
 var cors = require("cors")
 var bodyParser = require("body-parser")
-require('./auth/auth');
+require('./routes/auth');
 
 var app = express()
 module.exports = app
@@ -9,6 +9,9 @@ var port = process.env.PORT || 5000
 app.use(bodyParser.json())
 
 const db = require('./db')
+
+// reitti rekisteröinnillä ja sisäänkirjaukselle
+//const authRoute = require('./routes/auth')
 
 const routes = require('./routes/routes');
 //const secureRoute = require('/routes/secure-routes')
@@ -200,5 +203,5 @@ app.delete('/poistavastaus/:id', (req, res, next) => {
 
 
 app.listen(port, () => {
-    console.log("Palvelin käynnistyi portissa: " + port)
+    console.log("Palvelin on päällä portissa: " + port)
 })

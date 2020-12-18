@@ -1,8 +1,8 @@
 const express = require('express');
-const passport = require('passport');
+//const passport = require('passport');
 const jwt = require('jsonwebtoken')
 const db = require('../db')
-
+const userController = require('../controllers/userController');
 
 var bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
@@ -22,6 +22,7 @@ router.get('/kysymykset/', (req, res, next) => {
     })
 })
 
+// parametriratkasu
 router.post('/register/:etunimi/:sukunimi/:email/:salasana/:admin', (req, res, next) => {
     console.log("Yritetään rekisteröityä")
     bcrypt.hash(req.params.salasana, SALT_ROUNDS, (error, hash) => {
@@ -50,26 +51,33 @@ router.post('/register/:etunimi/:sukunimi/:email/:salasana/:admin', (req, res, n
 
 })
 
-/* router.post('/login/:email/:salasana', (req, res, next) => {
+router.post('/login/', userController.login)
+    
 
-    console.log("koitetaan kirjautua sissää")
-        db.query(`SELECT * FROM kayttajat WHERE email=$1`,
-            [req.params.email]), (err, result) => {
+                
+/*     try {
+         db.query(`SELECT * FROM kayttajat WHERE email=$1`,
+            [req.body.email]), (err, result) => {
                 if (err) {
                     console.log("virhe")
                     return next(err)
                 }
-
+                console.log(result)
+            }
+            
+        }catch (err){
+            res.send(err)
+        }
 
 
                 console.log(res.result)
                 try {
-                    console.log(req.params.salasana)
+                    /* console.log("salasana:", req.body.salasana)
                     console.log(result.rows[0].salasana)
-                    let hashSalasana = bcrypt.hash(tulevaSalasana, SALT_ROUNDS)
+                    let hashSalasana = bcrypt.hash(req.body.salasana, SALT_ROUNDS)
                     console.log(hashSalasana)
-
-                    let vertailu = bcrypt.compare(hashSalasana, res.rows[0].salasana)
+ */
+/*                     let vertailu = bcrypt.compare(hashSalasana, res.rows[0].salasana)
                     if (vertailu)
                         console.log("täsmää")
                     else
@@ -81,5 +89,5 @@ router.post('/register/:etunimi/:sukunimi/:email/:salasana/:admin', (req, res, n
             }
 
     
-    
-}) */
+        }   */  
+    //})

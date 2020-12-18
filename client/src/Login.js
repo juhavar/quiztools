@@ -3,6 +3,7 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+
 const Login = () => {
 
     const [userData, setUserData] = useState({
@@ -17,10 +18,13 @@ const Login = () => {
         try {
             e.preventDefault()
 
+            const response =
             await
                 axios
-                    .post(`http://localhost:5000/login/${userData.email}/${userData.salasana}`)
-
+                    .post(`http://localhost:5000/login/`,userData)
+            
+            console.log(response)
+            
         } catch (e) {
             console.log("registration error")
         }
@@ -36,7 +40,9 @@ const Login = () => {
                 <TextField name="salasana" label="Salasana" type="password"
                     onChange={(e) => { onChange(e) }}></TextField></div><p></p>
 
-            <div><Button onClick={onSubmit}>Kirjaudu sisään</Button></div></div>
+            <div><Button onClick={onSubmit}>Kirjaudu sisään</Button></div>
+            
+            </div>
 
     )
 }
