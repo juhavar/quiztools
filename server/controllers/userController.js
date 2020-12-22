@@ -1,4 +1,4 @@
-const User = require("../models/userModel.js")
+//const User = require("../models/userModel.js")
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 const SALT_ROUNDS = 10
@@ -8,17 +8,26 @@ exports.login = async (req, res, next) =>{
     console.log("koitetaan kirjautua sissää")
     console.log("käyttäjä", req.body.email)
     console.log("salasana", req.body.salasana)
+    // haetaan käyttäjän (hashattu) salasana tietokannasta
     db.query(`SELECT * FROM kayttajat WHERE email=$1`,[req.body.email], (err, kayttaja) =>{
-        if(err){
+        console.log("err", err)
+        
+        if (err) {
             return next(err)
-        }
+          }
     console.log("käyttajä", kayttaja.rows[0])
     try{
+        // verrataan annettua salasanaa kannassa olevaan
         bcrypt.compare(req.body.salasana, kayttaja.rows[0].salasana, function(err, pwCheck) {
-            console.log(pwCheck)
-            if(pwCheck){
-                const token = jwt.sign({ email: req.body.email}, 'TOP_SECRET' )
-                console.log("token tehty")
+            console.log("Salasana täsmää: ",pwCheck)
+            if(pwCheck){ // jos vertailu täsmää, tehdään token ja palautetaan se
+                const token = jwt.sign({ email: req.body.email, 
+                                         etunimi: kayttaja.rows[0].etunimi, 
+                                         sukunimi: kayttaja.rows[0].sukunimi, 
+                                         admin: kayttaja.rows[0].admin}, 
+                                         'TOP_SECRET',
+                                         {expiresIn: '240000s'} )
+                //console.log("token tehty")
                 res.header("auth-token",token).send({"token": token})
                 //res.send("logattu sissää")
             }
@@ -30,7 +39,20 @@ exports.login = async (req, res, next) =>{
     })
 }
 
+exports.tokentestaus = async (req, res) => {
+    console.log("token header",req.headers.token)
+    res.sendStatus(200)
+}
 
+
+exports.paljokello = (req, res, err) => {
+  if(err) {console.log(err)}
+
+    console.log('Kello on:', Date.now())
+    res.send("Kello", Date.now())
+  
+    
+}
 
 
 

@@ -1,6 +1,6 @@
 const express = require('express');
 //const passport = require('passport');
-const jwt = require('jsonwebtoken')
+
 const db = require('../db')
 const userController = require('../controllers/userController');
 
@@ -11,7 +11,9 @@ const router = express.Router();
 
 module.exports = router;
 
-// hakee kaikki kysymykset (testi)
+
+
+// hakee kaikki kysymykset (testinä että täällä ollaan)
 router.get('/kysymykset/', (req, res, next) => {
     db.query('SELECT * FROM kysymykset', (err, result) => {
         if (err) {
@@ -52,7 +54,7 @@ router.post('/register/:etunimi/:sukunimi/:email/:salasana/:admin', (req, res, n
 })
 
 router.post('/login/', userController.login)
-    
+
 
                 
 /*     try {

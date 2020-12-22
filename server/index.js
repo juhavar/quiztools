@@ -1,7 +1,9 @@
 var express = require("express")
 var cors = require("cors")
 var bodyParser = require("body-parser")
-require('./routes/auth');
+//require('./routes/auth');
+
+const jwt = require('jsonwebtoken')
 
 var app = express()
 module.exports = app
@@ -10,10 +12,10 @@ app.use(bodyParser.json())
 
 const db = require('./db')
 
-// reitti rekisteröinnillä ja sisäänkirjaukselle
-//const authRoute = require('./routes/auth')
-
 const routes = require('./routes/routes');
+const authRoute = require('./routes/auth')
+app.use('/kayttajat', authRoute)
+
 //const secureRoute = require('/routes/secure-routes')
 
 //https://expressjs.com/en/resources/middleware/cors.html
@@ -23,12 +25,20 @@ app.use(cors({
   optionsSuccessStatus: 200 }))
 
 app.use('/', routes)
-//app.use('/', auth.authenticate('jwt', { session: false}), secureRoute);
 
+//app.use('/paljokello', authRoute)
+//app.use('/kayttajat',authRoute)
+//app.use('/', authRoute.authenticateToken('jwt', { session: false}), authRoute);
 
-app.use('/paljokello', function (req, res, next) {
+var paljoKello= function (req, res, next) {
   console.log('Kello on:', Date.now())
   next()
+}
+app.use('/tokentestaus', authRoute)
+app.use('/token', authRoute)
+
+app.get('/paljokello', function (req, res, next) {
+  res.send('Kello')
 })
 
 
@@ -63,7 +73,7 @@ app.post('/lisaakysymys/:tentti_id/:teksti', (req, res, next) => {
 
 })
 
-// luodaan vastaus
+// luodaan vastaus (siirretty auth)
 
 app.post('/lisaavastaus/:tentti_id/:kysymys_id/:vastausteksti/:oikein', (req, res, next) => {
   db.query('INSERT INTO vastaukset(tentti_id, kysymys_id, vastausteksti, oikea) VALUES ($1, $2, $3, $4)',
@@ -91,7 +101,7 @@ app.get('/tentit/', (req, res) => {
 
 // hakee tentin id:n mukaan (ok)
 app.get('/tentit/:id', (req, res, next) => {
-  db.query('SELECT * FROM tentit WHERE id = $1', [req.params.id], (err, result) => {
+  db.query('SELECT * FROM tentit WHERE id = $1 ORDER BY id', [req.params.id], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -105,7 +115,7 @@ app.get('/tentit/:id', (req, res, next) => {
 // hakee tentin kysymykset
 app.get('/kysymykset/:tentti_id', (req, res, next) => {
   console.log(req.params.id)
-  db.query('SELECT * FROM kysymykset WHERE tentti_id = $1', [req.params.tentti_id], (err, result) => {
+  db.query('SELECT * FROM kysymykset WHERE tentti_id = $1 ORDER BY id', [req.params.tentti_id], (err, result) => {
     if (err) {
       return next(err)
     }
@@ -116,7 +126,7 @@ app.get('/kysymykset/:tentti_id', (req, res, next) => {
 
 // hakee kysymykseen vastausvaihtoehdot (ok)
 app.get('/vastaukset/:kysymys_id', (req, res, next) => {
-  db.query('SELECT * FROM vastaukset WHERE kysymys_id = $1', [req.params.kysymys_id], (err, result) => {
+  db.query('SELECT * FROM vastaukset WHERE kysymys_id = $1 ORDER BY id', [req.params.kysymys_id], (err, result) => {
     if (err) {
       return next(err)
     }

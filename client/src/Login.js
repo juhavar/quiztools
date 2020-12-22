@@ -15,6 +15,7 @@ const Login = () => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
     }
     const onSubmit = async (e) => {
+        
         try {
             e.preventDefault()
 
@@ -23,10 +24,29 @@ const Login = () => {
                 axios
                     .post(`http://localhost:5000/login/`,userData)
             
-            console.log(response)
+            console.log(response.data)
+            const token = await response.data.token
+            localStorage.setItem('token', token)
             
         } catch (e) {
             console.log("registration error")
+        }
+    }
+
+    const testaaToken = async () => {
+       
+        try {
+            //e.preventDefault()
+
+            const response =
+            await
+                axios
+                    .get(`http://localhost:5000/tokentestaus/`, {headers: {token: localStorage.token}})
+            
+            console.log(response)
+            
+        } catch (e) {
+            console.log("ei toimi")
         }
     }
 
@@ -41,6 +61,10 @@ const Login = () => {
                     onChange={(e) => { onChange(e) }}></TextField></div><p></p>
 
             <div><Button onClick={onSubmit}>Kirjaudu sisään</Button></div>
+
+            <div><Button onClick={testaaToken}>Tokenin testaus</Button></div>
+            
+            {localStorage.token} 
             
             </div>
 

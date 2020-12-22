@@ -70,7 +70,7 @@ const Kysymykset = (props) => {
             {questions.map((item, index) =>
 
               // tekstikentästä poistuminen aiheuttaa verkkoliikennettä vaikkei mitään muuteta
-              // kysymyksen poisto puuttuu
+              // kysymyksen poisto puuttuu (DELETE CASCADE?)
               <div className="Question">
                 <TextField
                   key={uuid()}

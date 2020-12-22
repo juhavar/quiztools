@@ -10,6 +10,7 @@ import { useState } from 'react';
 // import ShowAnswers from './ShowAnswers'
 import { Container, Checkbox } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import SvgIcon from '@material-ui/core/SvgIcon';
 import './App.css';
 // import Tentit from 'user/Tentit.js'
 import Tentit from './Tentit.js'
@@ -131,6 +132,14 @@ function reducer(state, action) {
 
 }
 
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
+
 return (
   <div className="App">
     
@@ -140,7 +149,7 @@ return (
           <nav>
             
               
-                <Button component={Link} to="/" >Home</Button>
+                <Button component={Link} to="/" ><HomeIcon color="action"></HomeIcon></Button>
                 <Button component={Link} to='/tentit'>Tentit</Button>
                 <Button component={Link} to='/login' >Kirjaudu</Button>
                 <Button component={Link} to='/register'>Rekisteröidy</Button>
