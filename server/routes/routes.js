@@ -19,7 +19,7 @@ router.get('/kysymykset/', (req, res, next) => {
         if (err) {
             return next(err)
         }
-        console.log(result.rows)
+        //console.log(result.rows)
         res.send(result.rows)
     })
 })

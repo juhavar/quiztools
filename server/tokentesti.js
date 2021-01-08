@@ -14,15 +14,17 @@ let hashattySalasana
 
     
 }); */
-(async () => {
+module.export = (async () => {
 try{
     hashattySalasana = await bcrypt.hash("ik_heet_kissa", SALT_ROUNDS)
     console.log(hashattySalasana)
     
-    let result = await bcrypt.compare("ik_heet_kisa", hashattySalasana)
+    let result = await bcrypt.compare("ik_heet_kissa", hashattySalasana)
     console.log(result)
+    return result
 } catch (e){
     console.log(e)
+    return e
 
 }
 })();   //IIFE Immediately invoked function expression

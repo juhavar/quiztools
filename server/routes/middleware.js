@@ -2,9 +2,11 @@ const jwt = require("jsonwebtoken");
 
 exports.adminCheck = async function (req, res, next) {
     console.log("Admincheck")
-    console.log("Header:",req.header.admin)
-    if( req.headers.admin === false ){
-        return res.status(401).send("Access Denied");
+    console.log("admin header:", req)
+    if( req.headers.admin === true ){
+        return res.status(202).send("Access granted");
     }  
-    next();
+    else{
+     return res.status(401).send("Access denied")
+    }
 }

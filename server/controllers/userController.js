@@ -5,21 +5,21 @@ const SALT_ROUNDS = 10
 const db = require('../db')
 
 exports.login = async (req, res, next) =>{
-    console.log("koitetaan kirjautua sissää")
+/*     console.log("koitetaan kirjautua sissää")
     console.log("käyttäjä", req.body.email)
-    console.log("salasana", req.body.salasana)
+    console.log("salasana", req.body.salasana) */
     // haetaan käyttäjän (hashattu) salasana tietokannasta
     db.query(`SELECT * FROM kayttajat WHERE email=$1`,[req.body.email], (err, kayttaja) =>{
-        console.log("err", err)
-        
         if (err) {
             return next(err)
           }
-    console.log("käyttajä", kayttaja.rows[0])
+    //console.log("käyttajä", kayttaja.rows[0])
+    if(kayttaja.rows[0]===null)
+          res.sendStatus(401)
     try{
         // verrataan annettua salasanaa kannassa olevaan
         bcrypt.compare(req.body.salasana, kayttaja.rows[0].salasana, function(err, pwCheck) {
-            console.log("Salasana täsmää: ",pwCheck)
+      //      console.log("Salasana täsmää: ",pwCheck)
             if(pwCheck){ // jos vertailu täsmää, tehdään token ja palautetaan se
                 const token = jwt.sign({ email: req.body.email, 
                                          etunimi: kayttaja.rows[0].etunimi, 
@@ -31,6 +31,7 @@ exports.login = async (req, res, next) =>{
                 res.header("auth-token",token).send({"token": token})
                 //res.send("logattu sissää")
             }
+            else return (res.sendStatus(401))
         })
 
     }catch{
@@ -39,23 +40,10 @@ exports.login = async (req, res, next) =>{
     })
 }
 
-exports.tokentestaus = async (req, res) => {
+exports.tokeninloggaus = async (req, res) => {
     console.log("token header",req.headers.token)
     res.sendStatus(200)
 }
-
-
-exports.paljokello = (req, res, err) => {
-  if(err) {console.log(err)}
-
-    console.log('Kello on:', Date.now())
-    res.send("Kello", Date.now())
-  
-    
-}
-
-
-
 
 
 

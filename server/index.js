@@ -30,16 +30,19 @@ app.use('/', routes)
 //app.use('/kayttajat',authRoute)
 //app.use('/', authRoute.authenticateToken('jwt', { session: false}), authRoute);
 
-var paljoKello= function (req, res, next) {
-  console.log('Kello on:', Date.now())
-  next()
-}
+
 app.use('/tokentestaus', authRoute)
 app.use('/token', authRoute)
 
-app.get('/paljokello', function (req, res, next) {
-  res.send('Kello')
+app.get('/moi', function(req,res){
+  
+  res.send('moi')
+  return 'moi'
 })
+
+/* app.get('/paljokello', function (req, res) {
+  res.send('Kello')
+}) */
 
 
 
@@ -73,7 +76,7 @@ app.post('/lisaakysymys/:tentti_id/:teksti', (req, res, next) => {
 
 })
 
-// luodaan vastaus (siirretty auth)
+// luodaan vastaus
 
 app.post('/lisaavastaus/:tentti_id/:kysymys_id/:vastausteksti/:oikein', (req, res, next) => {
   db.query('INSERT INTO vastaukset(tentti_id, kysymys_id, vastausteksti, oikea) VALUES ($1, $2, $3, $4)',
@@ -119,8 +122,7 @@ app.get('/kysymykset/:tentti_id', (req, res, next) => {
     if (err) {
       return next(err)
     }
-    console.log(result.rows)
-    res.send(result.rows)
+  res.send(result.rows)
   })
 })
 
