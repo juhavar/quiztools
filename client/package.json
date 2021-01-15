@@ -19,9 +19,12 @@
     "npm-add-dependencies": "^0.3.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropzone": "^11.2.4",
+    "react-intl": "^5.10.15",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-uuid": "^1.0.2",
+    "superagent": "^6.1.0",
     "uuid": "^8.3.1",
     "web-vitals": "^0.2.4"
   },

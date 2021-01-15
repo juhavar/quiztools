@@ -1,0 +1,16 @@
+{
+    "tentit.button" : "Exams",
+    "login.button" : "Login",
+    "register.button": "Register",
+
+    "firstName": "First name",
+    "surName": "Last name",
+	"email": "email",
+	"password": "Password",
+	"admin": "Teacher password",
+	
+	"question": "Question",
+	"add-answer": "Add answer",
+	"add-question": "Add question",
+	"answer": "Answer"
+}

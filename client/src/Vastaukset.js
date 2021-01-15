@@ -5,6 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import uuid from 'react-uuid';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 import axios from 'axios';
 import {
@@ -53,7 +54,7 @@ import {
       }
 
 
-      // tekstin muuttaminen toimii, checkbox puuttuu
+      
       if (answer.length < 1)
         return <></>
       return (
@@ -70,7 +71,11 @@ import {
         </Checkbox>
         <TextField 
           key={uuid()}
-          label="vastaus"
+          label={<FormattedMessage
+            id="answer"
+            defaultMessage="Vastaus"
+            description="Answer"
+        ></FormattedMessage>}
           variant="outlined"
           style={{width:'45%'}}
           defaultValue={item.vastausteksti}

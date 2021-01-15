@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 import Vastaukset from './Vastaukset'
 import uuid from 'react-uuid';
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import {
   BrowserRouter as Router,
   Switch,
@@ -74,7 +75,11 @@ const Kysymykset = (props) => {
               <div className="Question">
                 <TextField
                   key={uuid()}
-                  label="kysymys"
+                  label={<FormattedMessage
+                    id="question"
+                    defaultMessage="Kysymys"
+                    description="Question"
+                ></FormattedMessage>}
                   style={{ width: '50%' }}
                   variant="outlined"
                   defaultValue={item.teksti}
@@ -87,7 +92,11 @@ const Kysymykset = (props) => {
                 <Vastaukset key={uuid()} examID={props.examID} questionID={item.id}></Vastaukset>
                 <div id={item.index}>
                   <Button key={uuid()} color="primary"
-                    onClick={() => addAnswer(props.examID, item.id)}>Lisää vastaus</Button>
+                    onClick={() => addAnswer(props.examID, item.id)}>{<FormattedMessage
+                      id="add-answer"
+                      defaultMessage="Lisää vastaus"
+                      description="Add answer"
+                  ></FormattedMessage>}</Button>
                 </div>
               </div>
             )}
@@ -96,7 +105,11 @@ const Kysymykset = (props) => {
           <div>
             <Button color="primary"
               key={uuid()}
-              onClick={() => addQuestion(props.examID)}>Lisää kysymys</Button>
+              onClick={() => addQuestion(props.examID)}>{<FormattedMessage
+                id="add-question"
+                defaultMessage="Lisää kysymys"
+                description="Add question"
+            ></FormattedMessage>}</Button>
           </div>
         </Paper>
       </div>

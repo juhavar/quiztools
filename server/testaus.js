@@ -1,5 +1,5 @@
 var bcrypt = require('bcrypt')
-const SALT_ROUNDS = 10
+const SALT_ROUNDS = 14
 
 function haloo () {
   return 'haloo'
@@ -10,7 +10,7 @@ function merkkijono() {
 }
 function vuosiLuku() {
   let vuosi = new Date()
-  return ('Nyt on vuosi:', vuosi.getFullYear())
+  return (vuosi.getFullYear())
 }
 
 async function salasana() {

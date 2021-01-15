@@ -71,5 +71,17 @@ nav {
   padding-top: 25px;
   padding-bottom: 25px;
   padding-left:50px;
+  padding-right:50px;
   
+}
+.language-selector {
+  position: absolute;
+  
+  right:50px;
+}
+.date-time {
+  position: absolute;
+  top:50px;
+  right:50px;
+  color:rgb(198, 198, 206);
 }

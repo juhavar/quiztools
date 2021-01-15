@@ -1,0 +1,17 @@
+{
+    "tentit.button" : "Kỳ thi",
+    "login.button" : "Đăng nhập",
+    "register.button": "Đăng ký",
+
+    "firstName": "Tên đầu tiên",
+    "surName": "Họ",
+	"email": "email",
+	"password": "mật khẩu",
+	"admin": "Hồ Chí Minh?",
+	
+	"question": "Câu chất vấn",
+	"add-answer": "Thêm câu trả lời",
+	"add-question": "Thêm câu hỏi",
+	"answer": "Câu trả lời"
+			
+}

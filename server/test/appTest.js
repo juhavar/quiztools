@@ -1,7 +1,7 @@
-const request = require('supertest');
 const assert = require('chai').assert;
-const should = require('chai').should;
+//const should = require('chai').should;
 const expect = require('chai').expect
+const request = require('supertest');
 
 const app = require('../index');
 
@@ -13,7 +13,7 @@ const eriSalasana = require('../testaus').eriSalasana;
 const adminTest = require('../routes/middleware').adminCheck;
 
 
-describe('Huuhaatestaus', function () {
+describe('Kokeilutestaus', function () {
     it('haloo-funktion tulisi palauttaa haloo', function () {
         assert.equal(haloo(), 'haloo')
     }
@@ -35,7 +35,7 @@ describe('Huuhaatestaus', function () {
     )
 })
 
-describe('asynkroninen salasanan testaus', function () {
+describe('salasanan testaus', function () {
     it('testaa salasanan testaus (promise)', function () {
         let testi = salasana
         return testi().then(result => {
@@ -98,8 +98,8 @@ describe('Käyttäjien testaus', function () {
             request(app)
                 .post('/login')
                 .send({
-                    email: "bill.gates@microsoft.com",
-                    salasana: "windows"
+                    email: "unknown@user.com",
+                    salasana: "password"
                 })
                 .expect(401)
 
@@ -130,11 +130,7 @@ describe('Käyttäjien testaus', function () {
                 .get('/token')
                 .set('auth-token', token)
                 .expect(202)
-            /* .expect(function(res){
-                res.headers.token = token
-                
-                done()
-            } */
+
 
 
         })

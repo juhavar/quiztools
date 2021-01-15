@@ -1,6 +1,7 @@
 var express = require("express")
 var cors = require("cors")
 var bodyParser = require("body-parser")
+const fileUpload = require('express-fileupload');
 //require('./routes/auth');
 
 const jwt = require('jsonwebtoken')
@@ -15,7 +16,10 @@ const db = require('./db')
 const routes = require('./routes/routes');
 const authRoute = require('./routes/auth')
 app.use('/kayttajat', authRoute)
-
+app.use('/poistakayttaja/', authRoute)
+app.use(fileUpload({
+  limits: { fileSize: 2 * 1024 * 1024 * 1024 },
+}));
 //const secureRoute = require('/routes/secure-routes')
 
 //https://expressjs.com/en/resources/middleware/cors.html
@@ -33,6 +37,7 @@ app.use('/', routes)
 
 app.use('/tokentestaus', authRoute)
 app.use('/token', authRoute)
+app.use('/upload', routes)
 
 app.get('/moi', function(req,res){
   
@@ -109,7 +114,7 @@ app.get('/tentit/:id', (req, res, next) => {
       return next(err)
     }
     res.send(result.rows[0])
-    console.log(result.rows[0])
+    //console.log(result.rows[0])
   })
 })
 

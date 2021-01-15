@@ -2,6 +2,7 @@ const router = require('express').Router();
 const userController = require('../controllers/userController');
 const {adminCheck} = require('./middleware')
 
+const db = require('../db')
 const jwt = require('jsonwebtoken')
 
 router.use(authenticateToken)//, adminCheck)
@@ -31,6 +32,18 @@ function authenticateToken(req, res, next) {
         
     })
   }
+
+  router.delete('/poistakayttaja/:id', (req, res, next) => {
   
+    db.query('DELETE FROM kayttajat WHERE id=$1', [req.params.id], (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.send('Käyttäjä poistettu')
+  })
+  })
+  
+  
+
 
 module.exports = router;

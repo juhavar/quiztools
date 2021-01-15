@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import uusApp from './uusApp'
+import App from '../client/App'
 import AppJSONserver from './AppJSONserver'
 import AppLocalStorage from './AppLocalStorage';
 import LocalStorageChartDemo from './LocalStorageChartDemo'
@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppLocalStorage />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

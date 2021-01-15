@@ -2,6 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App'
+import Dropzone from './Dropzone'
+import {IntlProvider} from "react-intl";
+
+import Wrapper from "./components/Wrapper";
+import Finnish from './lang/fi.json'
+import Vietnamese from './lang/vi.json'
+
+
+
 // import tentit from './Tentit'
 // import kysymykset from './Kysymykset'
 /* import AppJSONserver from './AppJSONserver'
@@ -13,7 +22,10 @@ import LocalStorageChartDemo from './LocalStorageChartDemo'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <Dropzone></Dropzone>
+    {/* <Wrapper>
+       <App date = {Date.now()} />
+       </Wrapper> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
