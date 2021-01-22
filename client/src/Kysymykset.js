@@ -21,10 +21,11 @@ const Kysymykset = (props) => {
   let { path, url } = useRouteMatch()
   const [questions, setQuestions] = useState([])
   const [exam, setExam] = useState(0)
+  const [questionText, setQuestionText] = useState("")
 
   useEffect(() => {
     const getQuestion = async () => {
-      console.log("http://localhost:5000/kysymykset/" + props.examID)
+      //console.log("http://localhost:5000/kysymykset/" + props.examID)
       axios
         .get("http://localhost:5000/kysymykset/" + props.examID)
         .then(response => {
@@ -34,14 +35,23 @@ const Kysymykset = (props) => {
     getQuestion()
   }, [props.examID, exam])
 
+/*   const qClickHandler = (event) => {
+    console.log(questionText, event.target.value.toString())
+    setQuestionText(event.target.value.toString())
+  } */
+
   const changeQText = async (examID, questionID, event) => {
-    axios
+/*     if (questionText !== event.target.value.toString())
+    { */
+      axios
       .put(`http://localhost:5000/muokkaakysymys/${examID}/${questionID}/${event.target.value.toString()}`)
+    /* }
+      else return */
   }
 
   const addQuestion = async (examID) => {
     axios
-      .post(`http://localhost:5000/lisaakysymys/${examID}/'uusi kysymys'`)
+      .post(`http://localhost:5000/lisaakysymys/${examID}/' '`)
   }
 
   const deleteQuestion = async (questionID) => {
@@ -51,13 +61,21 @@ const Kysymykset = (props) => {
 
   const addAnswer = async (examID, questionID) => {
     axios
-      .post(`http://localhost:5000/lisaavastaus/${examID}/${questionID}/uusi vastaus/false`)
+      .post(`http://localhost:5000/lisaavastaus/${examID}/${questionID}/' '/false`)
     setExam(examID)
   }
 
-  if (questions.length === 1) {
+  if (questions.length < 1) {
     return <div>
-
+      <div>
+        <Button color="primary"
+          key={uuid()}
+          onClick={() => addQuestion(props.examID)}>{<FormattedMessage
+            id="add-question"
+            defaultMessage="Lisää kysymys"
+            description="Add question"
+          ></FormattedMessage>}</Button>
+      </div>
 
     </div>
   }
@@ -79,10 +97,11 @@ const Kysymykset = (props) => {
                     id="question"
                     defaultMessage="Kysymys"
                     description="Question"
-                ></FormattedMessage>}
+                  ></FormattedMessage>}
                   style={{ width: '50%' }}
                   variant="outlined"
                   defaultValue={item.teksti}
+                 /*  onClick={(event) => qClickHandler(event)} */
                   onBlur={(event) => changeQText(props.examID, item.id, event)} ></TextField>
                 <DeleteIcon
                   key={uuid()}
@@ -96,7 +115,7 @@ const Kysymykset = (props) => {
                       id="add-answer"
                       defaultMessage="Lisää vastaus"
                       description="Add answer"
-                  ></FormattedMessage>}</Button>
+                    ></FormattedMessage>}</Button>
                 </div>
               </div>
             )}
@@ -109,7 +128,7 @@ const Kysymykset = (props) => {
                 id="add-question"
                 defaultMessage="Lisää kysymys"
                 description="Add question"
-            ></FormattedMessage>}</Button>
+              ></FormattedMessage>}</Button>
           </div>
         </Paper>
       </div>

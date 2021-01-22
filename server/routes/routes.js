@@ -24,7 +24,7 @@ router.post('/upload', function (req, res) {
     let newFile = req.files.file;
     console.log(newFile)
     let date = Date.now().toString();
-    let fileName = 'uploads/kuva' + date + '.png'
+    let fileName = 'uploads/image' + date + '.png'
      newFile.mv(fileName, function (err) {
         if (err) {
             return res.status(500).send(err)

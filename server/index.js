@@ -1,17 +1,41 @@
 var express = require("express")
 var cors = require("cors")
 var bodyParser = require("body-parser")
-const fileUpload = require('express-fileupload');
+var fileUpload = require('express-fileupload');
 //require('./routes/auth');
-
-const jwt = require('jsonwebtoken')
-
 var app = express()
 module.exports = app
 var port = process.env.PORT || 5000
 app.use(bodyParser.json())
 
 const db = require('./db')
+
+// W E B S O C K E T
+//var http = require('http').Server(app)
+var webSocketServer = require('ws').Server
+var wsServerPort = 3001
+var wss = new webSocketServer({  port: wsServerPort })
+// var server = http.createServer()
+// server.listen( wsServerPort )
+
+const messageClients = (data) => {
+  //console.log("yritetään lähettää viestiä", data)
+  wss.clients.forEach((client) => {
+    client.send(data)
+  })
+}
+
+wss.on('connection', (ws) => {
+  console.log('WebSocket connection open')
+  ws.on('message', (data) => {
+    messageClients(data)
+  })
+})
+// /W E B S O C K E T
+
+const jwt = require('jsonwebtoken')
+
+
 
 const routes = require('./routes/routes');
 const authRoute = require('./routes/auth')
@@ -62,12 +86,13 @@ app.post('/lisaatentti/:nimi', (req, res, next) => {
         return next(err)
       }
       console.log(result)
+      messageClients("new-exam")
       res.send(result.rows[0].id)
     })
 
 })
 
-// luodaan kysymys (ehkä ok)
+// luodaan kysymys
 
 app.post('/lisaakysymys/:tentti_id/:teksti', (req, res, next) => {
   db.query('INSERT INTO kysymykset(tentti_id, teksti) VALUES ($1, $2) RETURNING id',
@@ -75,8 +100,10 @@ app.post('/lisaakysymys/:tentti_id/:teksti', (req, res, next) => {
       if (err) {
         return next(err)
       }
+      messageClients("new-question")
       res.send("Kysymyksen lisäys ok.")
       console.log("Lisätty kys")
+
     })
 
 })
@@ -89,6 +116,7 @@ app.post('/lisaavastaus/:tentti_id/:kysymys_id/:vastausteksti/:oikein', (req, re
       if (err) {
         return next(err)
       }
+      messageClients("new-answer")
       res.send("Vast lisäys ok.")
     })
 
@@ -150,7 +178,7 @@ app.put('/muokkaatentti/:id/:uusinimi', (req, res, next) =>{
     if (err) {
       return next(err)
     }
-    
+    messageClients("exam-changed")
     res.send("Tentin nimen muokkaus ok.")
   })
 
@@ -164,7 +192,7 @@ app.put('/muokkaakysymys/:tentti_id/:kysymys_id/:uusikysymysteksti', (req, res, 
     if (err) {
       return next(err)
     }
-    
+    messageClients("question-changed")
     res.send("Kysymyksen muokkaus ok.")
     console.log("kys muks ok")
   })
@@ -181,7 +209,8 @@ app.put('/muokkaavastaus/:id/:kysymys_id/:vastaus_id/:vastausteksti/:oikein', (r
       return next(err)
     }
     console.log("vastauksen muoks ok")
-    res.send("Vastauksen muokkaus ok.")
+    messageClients("answer-changed")
+    res.send("Vastauksen muokkaus ok." )
   })
 
 })
@@ -194,6 +223,7 @@ app.delete('/poistatentti/:id', (req, res, next) => {
   if (err) {
     return next(err)
   }
+  messageClients("delete-exam")
   res.send('Tentti poistettu')
 })
 })
@@ -204,6 +234,7 @@ app.delete('/poistakysymys/:id', (req, res, next) => {
   if (err) {
     return next(err)
   }
+  messageClients("delete-question")
   res.send('Kysymys poistettu')
 })
 })
@@ -214,6 +245,7 @@ app.delete('/poistavastaus/:id', (req, res, next) => {
   if (err) {
     return next(err)
   }
+  messageClients("delete-answer")
   res.send('Vastaus poistettu')
 })
 })

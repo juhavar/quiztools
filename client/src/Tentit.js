@@ -3,6 +3,11 @@ import Button from '@material-ui/core/Button';
 import uuid from 'react-uuid';
 import axios from 'axios';
 import Kysymykset from './Kysymykset'
+import { FormattedMessage, FormattedDate } from 'react-intl';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -16,6 +21,8 @@ import {
     let {path, url} = useRouteMatch()
     const [exam, setExam] = useState([])
     const [examID, setExamID] = useState()
+    const [newExamDialogOpen, setNewExamDialogOpen] = useState(false)
+    const [examName, setExamName] = useState("")
 
     useEffect(() => {
         const getExam = async () =>{
@@ -28,6 +35,19 @@ import {
         getExam()
       }, [])
 
+      const onClick = () => {
+        setNewExamDialogOpen(true)
+      }
+
+      const handleClose = () => {
+        setNewExamDialogOpen(false)
+        if(examName)
+          addExam(examName)
+      }
+      const addExam = async () => {
+        axios
+          .post(`http://localhost:5000/lisaatentti/${examName}`)
+      }
       if (exam.length < 1)
         return <>loading...</>
       return (
@@ -39,8 +59,17 @@ import {
         onClick={() => setExamID(item.id)} >
                 {item.nimi}</Button>
         )}
+
+
+
         <Button color="primary"
-                onClick={() => null}>+</Button>
+                onClick={onClick}
+                >
+                  +
+                  </Button>
+                  
+                  <NewExamDialog examName={examName} open={newExamDialogOpen} onClose={handleClose}></NewExamDialog>
+        
         </div>
         
         <Switch>
@@ -51,7 +80,36 @@ import {
             </Route>
         </Switch>
 
+
+        
         </div>
       )
   }
   export default Exam
+
+  function NewExamDialog(props){
+    const {open, onClose, examName} = props
+
+    const handleClose = () => {
+      onClose(examName)
+    }
+
+    return (
+      <Dialog onClose={handleClose()} open={open}>
+      <DialogTitle id="newExamDialog">
+      <FormattedMessage
+ 
+        id="new-exam-title"
+        description="Translation for new exam input"
+></FormattedMessage>
+      </DialogTitle>
+      <TextField key={uuid()}
+       
+      >teksti</TextField>
+      <Button >
+          Uus tentti
+      </Button>
+      <Button>Peruuta</Button>
+    </Dialog>
+    )
+  }

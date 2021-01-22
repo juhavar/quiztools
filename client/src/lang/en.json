@@ -12,5 +12,20 @@
 	"question": "Question",
 	"add-answer": "Add answer",
 	"add-question": "Add question",
-	"answer": "Answer"
+	"answer": "Answer",
+
+	"exam-changed": "Exam name changed",
+	"question-changed": "Question changed",
+	"answer-changed": "Answer changed",
+
+	"new-exam": "New exam created",
+	"new-question": "New question added",
+	"new-answer": "New answer added",
+
+	"delete-exam": "Exam deleted",
+	"delete-question": "Question deleted",
+	"delete-answer": "Answer deleted",
+
+	"new-exam-title": "Type new exam name"
+	
 }

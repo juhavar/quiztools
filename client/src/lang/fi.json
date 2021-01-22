@@ -1,5 +1,30 @@
 {
     "tentit.button" : "Tentit",
     "login.button" : "Kirjaudu",
-    "register.button": "Rekisteröidy"
+    "register.button": "Rekisteröidy",
+
+    "firstName": "Etunimi",
+    "surName": "Sukunimi",
+	"email": "Sähköposti",
+	"password": "Salasana",
+	"admin": "Opettajan salasana",
+	
+	"question": "Kysymys",
+	"add-answer": "Lisää vastaus",
+	"add-question": "Lisää kysymys",
+	"answer": "Vastaus",
+
+	"exam-changed": "Tentin nimeä muokattu",
+	"question-changed": "Kysymystä muokattu",
+	"answer-changed": "Vastausta muokattu",
+	
+	"new-exam": "Lisätty uusi tentti",
+	"new-question": "Lisätty uusi kysymys",
+	"new-answer": "Lisätty uusi vastaus",
+
+	"delete-exam": "Tentti poistettu",
+	"delete-question": "Kysymys poistettu",
+	"delete-answer": "Vastaus poistettu",
+
+	"new-exam-title": "Kirjoita uuden tentin nimi"
 }

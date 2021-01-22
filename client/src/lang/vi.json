@@ -12,6 +12,19 @@
 	"question": "Câu chất vấn",
 	"add-answer": "Thêm câu trả lời",
 	"add-question": "Thêm câu hỏi",
-	"answer": "Câu trả lời"
+	"answer": "Câu trả lời",
 			
+	"exam-changed": "Tên bài kiểm tra đã thay đổi",
+	"question-changed": "Câu hỏi đã thay đổi",
+	"answer-changed": "Câu trả lời đã thay đổi",
+
+	"new-exam": "Bài kiểm tra mới đã được thêm vào",
+	"new-question": "Đã thêm câu hỏi mới",
+	"new-answer": "Đã thêm câu trả lời mới",
+
+	"delete-exam": "Đã xóa bài kiểm tra",
+	"delete-question": "Đã xóa câu hỏi",
+	"delete-answer": "Đã xóa câu trả lời",
+
+	"new-exam-title": "Nhập tên bài kiểm tra mới"
 }

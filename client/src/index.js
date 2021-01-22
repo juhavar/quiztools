@@ -22,10 +22,10 @@ import LocalStorageChartDemo from './LocalStorageChartDemo'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Dropzone></Dropzone>
-    {/* <Wrapper>
+  
+    { <Wrapper>
        <App date = {Date.now()} />
-       </Wrapper> */}
+       </Wrapper> }
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import request from "superagent";
 
 
-const Dropzonedemo = () => {
+const Dropzone = () => {
     const maxSize = 1048576
     const onDrop = useCallback(files => {
         console.log(files);
@@ -45,4 +45,4 @@ const Dropzonedemo = () => {
       );
 
   }
-  export default Dropzonedemo
+  export default Dropzone

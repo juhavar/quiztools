@@ -16,6 +16,7 @@ import {
     useRouteMatch,
     useParams
   } from "react-router-dom";
+import Dropzone from './Dropzone'
 
   const Kysymykset = (props) => {
     let {path, url} = useRouteMatch()
@@ -43,7 +44,7 @@ import {
       }
 
       const handleCheck = async (examID, questionID, item, event) =>{
-        console.log("handle check")
+        //console.log("handle check")
         axios
           .put(`http://localhost:5000/muokkaavastaus/${examID}/${questionID}/${item.id}/${item.vastausteksti}/${event.target.checked}/`)
       }
@@ -66,9 +67,11 @@ import {
           key={uuid()}
           defaultChecked={item.oikea}
           
-          onClick={(event) => handleCheck(props.examID, props.questionID, item, event)} 
->
+          onClick={(event) => handleCheck(props.examID, props.questionID, item, event)} >
         </Checkbox>
+
+        
+
         <TextField 
           key={uuid()}
           label={<FormattedMessage
@@ -81,6 +84,7 @@ import {
           defaultValue={item.vastausteksti}
           onBlur={(event) => changeText(props.examID, props.questionID, item, event)}>
         </TextField>
+       
         <DeleteIcon
           key={uuid()}
           onClick={(event) => deleteAnswer(item)}>
