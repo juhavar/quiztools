@@ -22,6 +22,23 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
+/*
+  var path = null
+  switch (process.env.NODE_ENV) {
+  case 'production':
+    path = 'https://url.herokuapp.com'
+    break
+    case 'development':
+      path = localhost
+      break
+    case 'test':
+      path = localhost
+      break
+    default:
+      throw "Environment not properly set!"
+}
+*/
+
 function App(props) {
   const context = useContext(Context);
   const [dataFromNodeServer, setDataFromNodeServer] = useState([]);

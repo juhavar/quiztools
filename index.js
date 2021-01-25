@@ -1,5 +1,6 @@
 var express = require("express")
 var cors = require("cors")
+var path = require('path')
 var bodyParser = require("body-parser")
 var fileUpload = require('express-fileupload');
 //require('./routes/auth');
@@ -7,6 +8,7 @@ var app = express()
 module.exports = app
 var port = process.env.PORT || 5000
 app.use(bodyParser.json())
+app.use(express.static('./client/build'))
 
 const db = require('./db')
 
@@ -250,6 +252,9 @@ app.delete('/poistavastaus/:id', (req, res, next) => {
 })
 })
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'))
+})
 
 app.listen(port, () => {
     console.log("Palvelin on päällä portissa: " + port)
