@@ -19,6 +19,7 @@ import {
 
 const Kysymykset = (props) => {
   let { path, url } = useRouteMatch()
+  const host = props.host
   const [questions, setQuestions] = useState([])
   const [exam, setExam] = useState(0)
   const [questionText, setQuestionText] = useState("")
@@ -27,7 +28,7 @@ const Kysymykset = (props) => {
     const getQuestion = async () => {
       //console.log("http://localhost:5000/kysymykset/" + props.examID)
       axios
-        .get(`${url}:5000/kysymykset/` + props.examID)
+        .get(`${host}:5000/kysymykset/` + props.examID)
         .then(response => {
           setQuestions(response.data)
         })

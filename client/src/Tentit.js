@@ -17,17 +17,20 @@ import {
     useParams
   } from "react-router-dom";
 
-  const Exam = () => {
+  const Exam = (props) => {
     let {path, url} = useRouteMatch()
+    const host = props.host
     const [exam, setExam] = useState([])
     const [examID, setExamID] = useState()
     const [newExamDialogOpen, setNewExamDialogOpen] = useState(false)
     const [examName, setExamName] = useState("")
 
     useEffect(() => {
+     
         const getExam = async () =>{
+          console.log(props)
           axios
-            .get(`${url}:5000/tentit`)
+            .get(host + "/tentit")
             .then(response => {
               setExam(response.data)
             })
@@ -48,9 +51,12 @@ import {
         axios
           .post(`http://localhost:5000/lisaatentti/${examName}`)
       }
+
+
       if (exam.length < 1)
         return <>loading...</>
       return (
+        
         <div className = "Exam-list">
             <div>
       {exam.map((item, index) =>
@@ -76,7 +82,7 @@ import {
             <Route exact path = {path}>
             </Route>
             <Route path={`${path}/:id`}>
-            <Kysymykset examID={examID}></Kysymykset>
+            <Kysymykset examID={examID} host={host}></Kysymykset>
             </Route>
         </Switch>
 

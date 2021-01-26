@@ -27,6 +27,23 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
 function App(props) {
+
+  var host = null
+  switch (process.env.NODE_ENV) {
+  case 'production':
+      host = 'https://jv-quiztool.herokuapp.com'
+      break
+    case 'development':
+      host = 'http://localhost:5000'
+      break
+    case 'test':
+      host = 'localhost'
+      break
+    default:
+      throw "Environment not properly set!"
+      break
+}
+
   const context = useContext(Context);
   const [dataFromNodeServer, setDataFromNodeServer] = useState([]);
   const [dataFromNodeServerFormatted, setDataFromNodeServerFormatted] = useState(false);
@@ -34,23 +51,9 @@ function App(props) {
   const exams = [];
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
-  const client = new W3CWebSocket("ws://localhost:3001")
+  const client = new W3CWebSocket(`ws://${host}:3001`)
 
-  var host_path = null
-  switch (process.env.NODE_ENV) {
-  case 'production':
-      host_path = 'https://jv-quiztool.herokuapp.com/'
-      break
-    case 'development':
-      host_path = 'http://localhost:5000/'
-      break
-    case 'test':
-      host_path = 'http://localhost:5000/'
-      break
-    default:
-      throw "Environment not properly set!"
-      break
-}
+
 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -106,7 +109,7 @@ function showAlert(e) {
     <div className="App">
 
 
-      <Router>
+      <Router >
         <div>
           <nav>
 
@@ -155,7 +158,7 @@ function showAlert(e) {
               <Login />
             </Route>
             <Route path="/tentit">
-              <Tentit />
+              <Tentit host={host}  />
             </Route>
             <Route path="/">
               <Home />
