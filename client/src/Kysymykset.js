@@ -28,7 +28,7 @@ const Kysymykset = (props) => {
     const getQuestion = async () => {
       //console.log("http://localhost:5000/kysymykset/" + props.examID)
       axios
-        .get(host + ":5000/kysymykset/" + props.examID)
+        .get(host + "/kysymykset/" + props.examID)
         .then(response => {
           setQuestions(response.data)
         })
@@ -45,24 +45,24 @@ const Kysymykset = (props) => {
 /*     if (questionText !== event.target.value.toString())
     { */
       axios
-      .put(host + `:5000/muokkaakysymys/${examID}/${questionID}/${event.target.value.toString()}`)
+      .put(host + `/muokkaakysymys/${examID}/${questionID}/${event.target.value.toString()}`)
     /* }
       else return */
   }
 
   const addQuestion = async (examID) => {
     axios
-      .post(host + `:5000/lisaakysymys/${examID}/' '`)
+      .post(host + `/lisaakysymys/${examID}/' '`)
   }
 
   const deleteQuestion = async (questionID) => {
     axios
-      .delete(host + `:5000/poistakysymys/${questionID.id}`)
+      .delete(host + `/poistakysymys/${questionID.id}`)
   }
 
   const addAnswer = async (examID, questionID) => {
     axios
-      .post(host + `:5000/lisaavastaus/${examID}/${questionID}/' '/false`)
+      .post(host + `/lisaavastaus/${examID}/${questionID}/' '/false`)
     setExam(examID)
   }
 

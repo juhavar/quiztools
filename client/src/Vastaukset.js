@@ -29,7 +29,7 @@ import Dropzone from './Dropzone'
         const getAnswer = async () =>{
 
           axios
-            .get(host + ":5000/vastaukset/" + props.questionID)
+            .get(host + "/vastaukset/" + props.questionID)
             .then(response => {
               console.log("response", response.data)
               setAnswer(response.data)
@@ -41,18 +41,18 @@ import Dropzone from './Dropzone'
       const changeText = async (examID, questionID, item, event) => {
         //setQuestionID(props.questionID)
         axios
-          .put(host + `5000/muokkaavastaus/${examID}/${questionID}/${item.id}/${event.target.value}/${item.oikea}/`)
+          .put(host + `/muokkaavastaus/${examID}/${questionID}/${item.id}/${event.target.value}/${item.oikea}/`)
       }
 
       const handleCheck = async (examID, questionID, item, event) =>{
         //console.log("handle check")
         axios
-          .put(host + `:5000/muokkaavastaus/${examID}/${questionID}/${item.id}/${item.vastausteksti}/${event.target.checked}/`)
+          .put(host + `/muokkaavastaus/${examID}/${questionID}/${item.id}/${item.vastausteksti}/${event.target.checked}/`)
       }
 
       const deleteAnswer = async (item) =>{
         axios
-          .delete(host + `:5000/poistavastaus/${item.id}`)
+          .delete(host + `/poistavastaus/${item.id}`)
       }
 
 
