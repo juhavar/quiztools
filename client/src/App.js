@@ -37,7 +37,7 @@ function App(props) {
       host = 'http://localhost:5000'
       break
     case 'test':
-      host = 'localhost:5000'
+      host = 'http://localhost:5000'
       break
     default:
       throw "Environment not properly set!"
