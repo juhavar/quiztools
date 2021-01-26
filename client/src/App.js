@@ -20,7 +20,7 @@ import Login from './Login.js'
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+//import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
   
@@ -49,15 +49,18 @@ function App(props) {
   const [dataFromNodeServerFormatted, setDataFromNodeServerFormatted] = useState(false);
   const [state, dispatch] = useReducer(reducer, []);
   const exams = [];
+  
+  
+  /* tässä kohtaa oli totetutus websocket-pohjaisille ilmoituksille, mutta
+   ne ei toimi Herokussa joten kommentoitu pois
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
   const client = new W3CWebSocket(`ws://${host}:3001`)
 
-
-
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+
 useEffect(() => {
   client.onopen = (e) => {
     console.log("WebSocket connection open.")
@@ -69,14 +72,14 @@ useEffect(() => {
     
    
   }
-},[client.onChange])
+},[client.onChange]) 
 
 function showAlert(e) {
     
  
 }
 
-  
+  */
 
 
   function reducer(state, action) {
@@ -88,15 +91,15 @@ function showAlert(e) {
     }
 
   }
-
+/* 
   function handleClose(event, reason){
-/*     if (reason === 'clickaway') {
+    if (reason === 'clickaway') {
       return;
-    } */
+    } 
 
     setAlertOpen(false);
   }
-
+*/
   function HomeIcon(props) {
     return (
       <SvgIcon {...props}>
@@ -167,6 +170,9 @@ function showAlert(e) {
         </div>
       </Router>
 
+      {/* 
+      ilmoitusikkuna
+      
       <div>
       {console.log("Renderöinnin viesti:", alertMessage)}
     <Snackbar open={alertOpen} onClose={handleClose} autoHideDuration={3000} anchorOrigin={{
@@ -180,7 +186,7 @@ function showAlert(e) {
               description="Translations for alert messages"
             ></FormattedMessage></Alert>
     </Snackbar> </div> 
-
+ */}
 
     </div>
 
