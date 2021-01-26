@@ -22,22 +22,23 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-/*
-  var path = null
+
+  var host_path = null
   switch (process.env.NODE_ENV) {
   case 'production':
-    path = 'https://url.herokuapp.com'
+    host_path = 'https://url.herokuapp.com/'
     break
     case 'development':
-      path = localhost
+      host_path = 'http://localhost:5000/'
       break
     case 'test':
-      path = localhost
+      host_path = 'http://localhost:5000/'
       break
     default:
       throw "Environment not properly set!"
+      break
 }
-*/
+
 
 function App(props) {
   const context = useContext(Context);

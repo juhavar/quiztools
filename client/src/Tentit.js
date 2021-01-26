@@ -27,7 +27,7 @@ import {
     useEffect(() => {
         const getExam = async () =>{
           axios
-            .get("http://localhost:5000/tentit")
+            .get("/tentit")
             .then(response => {
               setExam(response.data)
             })
