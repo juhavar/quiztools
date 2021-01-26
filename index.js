@@ -1,5 +1,5 @@
 var express = require("express")
-//var cors = require("cors")
+var cors = require("cors")
 var path = require('path')
 var bodyParser = require("body-parser")
 var fileUpload = require('express-fileupload');
@@ -50,10 +50,10 @@ app.use(fileUpload({
 
 //https://expressjs.com/en/resources/middleware/cors.html
 // pelkkä localhost:3000 läpi
-/* app.use(cors({
-  origin: 'http://localhost:3000',
+app.use(cors({
+  origin: '*',
   optionsSuccessStatus: 200 }))
- */
+
 app.use('/', routes)
 
 //app.use('/paljokello', authRoute)

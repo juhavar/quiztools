@@ -28,7 +28,7 @@ const Kysymykset = (props) => {
     const getQuestion = async () => {
       //console.log("http://localhost:5000/kysymykset/" + props.examID)
       axios
-        .get(`${host}:5000/kysymykset/` + props.examID)
+        .get(host + ":5000/kysymykset/" + props.examID)
         .then(response => {
           setQuestions(response.data)
         })
