@@ -45,24 +45,24 @@ const Kysymykset = (props) => {
 /*     if (questionText !== event.target.value.toString())
     { */
       axios
-      .put(host+`:5000/muokkaakysymys/${examID}/${questionID}/${event.target.value.toString()}`)
+      .put(host + `:5000/muokkaakysymys/${examID}/${questionID}/${event.target.value.toString()}`)
     /* }
       else return */
   }
 
   const addQuestion = async (examID) => {
     axios
-      .post(host+`:5000/lisaakysymys/${examID}/' '`)
+      .post(host + `:5000/lisaakysymys/${examID}/' '`)
   }
 
   const deleteQuestion = async (questionID) => {
     axios
-      .delete(host+`:5000/poistakysymys/${questionID.id}`)
+      .delete(host + `:5000/poistakysymys/${questionID.id}`)
   }
 
   const addAnswer = async (examID, questionID) => {
     axios
-      .post(host+`:5000/lisaavastaus/${examID}/${questionID}/' '/false`)
+      .post(host + `:5000/lisaavastaus/${examID}/${questionID}/' '/false`)
     setExam(examID)
   }
 
@@ -109,7 +109,7 @@ const Kysymykset = (props) => {
                   onClick={(event) => deleteQuestion(item)}>
 
                 </DeleteIcon>
-                <Vastaukset key={uuid()} examID={props.examID} questionID={item.id}></Vastaukset>
+                <Vastaukset host={host} key={uuid()} examID={props.examID} questionID={item.id}></Vastaukset>
                 <div id={item.index}>
                   <Button key={uuid()} color="primary"
                     onClick={() => addAnswer(props.examID, item.id)}>{<FormattedMessage
