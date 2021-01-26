@@ -23,21 +23,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
-  var host_path = null
-  switch (process.env.NODE_ENV) {
-  case 'production':
-    host_path = 'https://url.herokuapp.com/'
-    break
-    case 'development':
-      host_path = 'http://localhost:5000/'
-      break
-    case 'test':
-      host_path = 'http://localhost:5000/'
-      break
-    default:
-      throw "Environment not properly set!"
-      break
-}
+  
 
 
 function App(props) {
@@ -49,6 +35,22 @@ function App(props) {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
   const client = new W3CWebSocket("ws://localhost:3001")
+
+  var host_path = null
+  switch (process.env.NODE_ENV) {
+  case 'production':
+      host_path = 'https://jv-quiztool.herokuapp.com/'
+      break
+    case 'development':
+      host_path = 'http://localhost:5000/'
+      break
+    case 'test':
+      host_path = 'http://localhost:5000/'
+      break
+    default:
+      throw "Environment not properly set!"
+      break
+}
 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
