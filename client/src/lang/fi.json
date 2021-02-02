@@ -1,7 +1,8 @@
 {
     "tentit.button" : "Tentit",
     "login.button" : "Kirjaudu",
-    "register.button": "Rekisteröidy",
+	"register.button": "Rekisteröidy",
+	"logout.button": "Poistu",
 
     "firstName": "Etunimi",
     "surName": "Sukunimi",

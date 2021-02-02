@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
+
+    const [token, setToken] = useState(null);
+    const [userLogin, setUserLogin] = useState(false)
+
+    //setUserLogin(props.userLoggedIn)
 
     const [userData, setUserData] = useState({
         email: '',
         salasana: '',
     })
+    const history = useHistory();
 
     const onChange = (e) => {
         setUserData({ ...userData, [e.target.name]: e.target.value })
@@ -22,11 +29,15 @@ const Login = () => {
             const response =
             await
                 axios
-                    .post(`http://localhost:5000/login/`,userData)
+                    .post(props.host + `/login/`,userData)
             
             console.log(response.data)
-            const token = await response.data.token
-            localStorage.setItem('token', token)
+            const token = await response.data
+            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('admin', response.data.admin)
+            history.push('/')
+            //setUserLogin(true)
+            window.location.reload()
             
         } catch (e) {
             console.log("registration error")
@@ -41,7 +52,7 @@ const Login = () => {
             const response =
             await
                 axios
-                    .get(`http://localhost:5000/tokentestaus/`, {headers: {token: localStorage.token}})
+                    .get(props.host + `/tokentestaus/`, {headers: {token: localStorage.token}})
             
             console.log(response)
             

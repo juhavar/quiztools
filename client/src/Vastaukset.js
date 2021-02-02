@@ -17,6 +17,7 @@ import {
     useParams
   } from "react-router-dom";
 import Dropzone from './Dropzone'
+import { changeText, handleCheck, deleteAnswer } from './AxiosKutsut'
 
   const Vastaukset = (props) => {
     let {path, url} = useRouteMatch()
@@ -38,23 +39,7 @@ import Dropzone from './Dropzone'
         getAnswer()
       },[])
 
-      const changeText = async (examID, questionID, item, event) => {
-        //setQuestionID(props.questionID)
-        axios
-          .put(host + `/muokkaavastaus/${examID}/${questionID}/${item.id}/${event.target.value}/${item.oikea}/`)
-      }
-
-      const handleCheck = async (examID, questionID, item, event) =>{
-        //console.log("handle check")
-        axios
-          .put(host + `/muokkaavastaus/${examID}/${questionID}/${item.id}/${item.vastausteksti}/${event.target.checked}/`)
-      }
-
-      const deleteAnswer = async (item) =>{
-        axios
-          .delete(host + `/poistavastaus/${item.id}`)
-      }
-
+  
 
       
       if (answer.length < 1)

@@ -1,7 +1,8 @@
 {
     "tentit.button" : "Exams",
     "login.button" : "Login",
-    "register.button": "Register",
+	"register.button": "Register",
+	"logout.button": "Log out",
 
     "firstName": "First name",
     "surName": "Last name",

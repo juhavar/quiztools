@@ -24,13 +24,14 @@ import {
     const [examID, setExamID] = useState()
     const [newExamDialogOpen, setNewExamDialogOpen] = useState(false)
     const [examName, setExamName] = useState("")
-
+    const token = localStorage.token
+    const admin = localStorage.admin
     useEffect(() => {
      
         const getExam = async () =>{
           console.log(props)
           axios
-            .get(host + "/tentit")
+            .get(host + "/tentit", {headers: {token:token}, admin:admin})
             .then(response => {
               setExam(response.data)
             })
@@ -49,7 +50,8 @@ import {
       }
       const addExam = async () => {
         axios
-          .post(`http://localhost:5000/lisaatentti/${examName}`)
+        .post(`http://localhost:5000/kayttajat`)  
+        //.post(`http://localhost:5000/lisaatentti/${examName}`)
       }
 
 

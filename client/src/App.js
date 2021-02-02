@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+
 import { useState } from 'react';
 import { Context } from "./components/Wrapper";
 
@@ -23,14 +24,14 @@ import MuiAlert from '@material-ui/lab/Alert';
 //import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
-  
+
 
 
 function App(props) {
 
   var host = null
   switch (process.env.NODE_ENV) {
-  case 'production':
+    case 'production':
       host = 'https://jv-quiztool.herokuapp.com'
       break
     case 'development':
@@ -42,15 +43,17 @@ function App(props) {
     default:
       throw "Environment not properly set!"
       break
-}
+  }
 
   const context = useContext(Context);
   const [dataFromNodeServer, setDataFromNodeServer] = useState([]);
   const [dataFromNodeServerFormatted, setDataFromNodeServerFormatted] = useState(false);
   const [state, dispatch] = useReducer(reducer, []);
+  const [token, setToken] = useState(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const exams = [];
-  
-  
+
+
   /* tässä kohtaa oli totetutus websocket-pohjaisille ilmoituksille, mutta
    ne ei toimi Herokussa joten kommentoitu pois
   const [alertOpen, setAlertOpen] = useState(false)
@@ -78,9 +81,17 @@ function showAlert(e) {
     
  
 }
-
   */
 
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+
+    if (token == null) {
+      setUserLoggedIn(false)
+    }
+    else
+      setUserLoggedIn(true)
+  }, [token, userLoggedIn])
 
   function reducer(state, action) {
     switch (action.type) {
@@ -91,15 +102,24 @@ function showAlert(e) {
     }
 
   }
-/* 
-  function handleClose(event, reason){
-    if (reason === 'clickaway') {
-      return;
-    } 
 
-    setAlertOpen(false);
+  const logIn = () => {
+    setUserLoggedIn(true)
   }
-*/
+  const logOut = () => {
+    localStorage.removeItem('token')
+    setToken(null)
+    setUserLoggedIn(false)
+  }
+  /* 
+    function handleClose(event, reason){
+      if (reason === 'clickaway') {
+        return;
+      } 
+  
+      setAlertOpen(false);
+    }
+  */
   function HomeIcon(props) {
     return (
       <SvgIcon {...props}>
@@ -113,55 +133,77 @@ function showAlert(e) {
 
 
       <Router >
+        
         <div>
           <nav>
 
 
             <Button component={Link} to="/" ><HomeIcon color="action"></HomeIcon></Button>
-            <Button component={Link} to='/tentit'>
-              <FormattedMessage
-                id="tentit.button"
-                defaultMessage="Tentit"
-                description="Navigation/exams button"
-              ></FormattedMessage></Button>
-            <Button component={Link} to='/login' ><FormattedMessage
-              id="login.button"
-              defaultMessage="Kirjaudu"
-              description="Navigation/login button"
-            ></FormattedMessage></Button>
-            <Button component={Link} to='/register'><FormattedMessage
-              id="register.button"
-              defaultMessage="Rekisteröidy"
-              description="Navigation/register button"
-            ></FormattedMessage></Button>
-            
+
+            {userLoggedIn
+              ?
+              <React.Fragment>
+                <Button component={Link} to='/tentit'>
+                  <FormattedMessage
+                    id="tentit.button"
+                    defaultMessage="Tentit"
+                    description="Navigation/exams button"
+                  ></FormattedMessage></Button>
+
+                <Button onClick={logOut} component={Link} to="/">
+                  <FormattedMessage
+                    id="logout.button"
+                    defaultMessage="Poistu"
+                    description="Log out button"
+                  ></FormattedMessage></Button>
+
+              </React.Fragment>
+              :
+              <React.Fragment>
+                <Button component={Link} to='/login' ><FormattedMessage
+                  id="login.button"
+                  defaultMessage="Kirjaudu"
+                  description="Navigation/login button"
+                ></FormattedMessage></Button>
+                <Button component={Link} to='/register'><FormattedMessage
+                  id="register.button"
+                  defaultMessage="Rekisteröidy"
+                  description="Navigation/register button"
+                ></FormattedMessage></Button>
+              </React.Fragment>
+            }
+
+
+
+
+
             <select className="language-selector" value={context.locale} onChange={context.selectLanguage}>
               <option value='en-gb'>English</option>
-              <option value='fi'>suomi</option>
+              <option default value='fi'>suomi</option>
               <option value='vi'>Tiếng Việt</option>
             </select>
             <text className="date-time"><FormattedDate
-              
-              value = {props.date}
-              year = 'numeric'
-              month = 'numeric'
-              day = 'numeric'
-              weekday = 'long'
-              ></FormattedDate></text>
-            
+
+              value={props.date}
+              year='numeric'
+              month='numeric'
+              day='numeric'
+              weekday='long'
+            ></FormattedDate></text>
+
           </nav>
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <Switch>
+          <Switch >
             <Route path="/register">
-              <Register />
+              <Register host={host} />
             </Route>
             <Route path="/login">
-              <Login />
+              <Login host={host} userLoggedIn={userLoggedIn} onChange={logIn}/>
             </Route>
             <Route path="/tentit">
-              <Tentit host={host}  />
+              <Tentit host={host} />
             </Route>
             <Route path="/">
               <Home />

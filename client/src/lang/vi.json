@@ -1,7 +1,8 @@
 {
     "tentit.button" : "Kỳ thi",
     "login.button" : "Đăng nhập",
-    "register.button": "Đăng ký",
+	"register.button": "Đăng ký",
+	"logout.button": "Đăng xuất",
 
     "firstName": "Tên đầu tiên",
     "surName": "Họ",

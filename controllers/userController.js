@@ -28,7 +28,7 @@ exports.login = async (req, res, next) =>{
                                          'TOP_SECRET',
                                          {expiresIn: '240000s'} )
                 //console.log("token tehty")
-                res.header("auth-token",token).send({"token": token})
+                res.header("token",token, "admin", kayttaja.rows[0].admin).send({"token": token, "admin": kayttaja.rows[0].admin})
                 //res.send("logattu sissää")
             }
             else return (res.sendStatus(401))
@@ -40,7 +40,7 @@ exports.login = async (req, res, next) =>{
     })
 }
 
-exports.tokeninloggaus = async (req, res) => {
+exports.tokenintestaus = async (req, res) => {
     console.log("token header",req.headers.token)
     res.sendStatus(200)
 }

@@ -15,15 +15,18 @@ import {
   useRouteMatch,
   useParams
 } from "react-router-dom";
+import { addQuestion, changeQText, deleteQuestion, addAnswer} from './AxiosKutsut'
 
 
 const Kysymykset = (props) => {
   let { path, url } = useRouteMatch()
   const host = props.host
+  //const token = localStorage.token
   const [questions, setQuestions] = useState([])
   const [exam, setExam] = useState(0)
   const [questionText, setQuestionText] = useState("")
 
+  
   useEffect(() => {
     const getQuestion = async () => {
       //console.log("http://localhost:5000/kysymykset/" + props.examID)
@@ -41,30 +44,9 @@ const Kysymykset = (props) => {
     setQuestionText(event.target.value.toString())
   } */
 
-  const changeQText = async (examID, questionID, event) => {
-/*     if (questionText !== event.target.value.toString())
-    { */
-      axios
-      .put(host + `/muokkaakysymys/${examID}/${questionID}/${event.target.value.toString()}`)
-    /* }
-      else return */
-  }
 
-  const addQuestion = async (examID) => {
-    axios
-      .post(host + `/lisaakysymys/${examID}/' '`)
-  }
 
-  const deleteQuestion = async (questionID) => {
-    axios
-      .delete(host + `/poistakysymys/${questionID.id}`)
-  }
-
-  const addAnswer = async (examID, questionID) => {
-    axios
-      .post(host + `/lisaavastaus/${examID}/${questionID}/' '/false`)
-    setExam(examID)
-  }
+  
 
   if (questions.length < 1) {
     return <div>
