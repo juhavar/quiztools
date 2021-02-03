@@ -6,118 +6,127 @@ import Kysymykset from './Kysymykset'
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
 import TextField from '@material-ui/core/TextField';
+import { addExam, changeExamName, deleteExam } from './AxiosKutsut';
 
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-    useParams
-  } from "react-router-dom";
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
 
-  const Exam = (props) => {
-    let {path, url} = useRouteMatch()
-    const host = props.host
-    const [exam, setExam] = useState([])
-    const [examID, setExamID] = useState()
-    const [newExamDialogOpen, setNewExamDialogOpen] = useState(false)
-    const [examName, setExamName] = useState("")
-    const token = localStorage.token
-    const admin = localStorage.admin
-    useEffect(() => {
-     
-        const getExam = async () =>{
-          console.log(props)
-          axios
-            .get(host + "/tentit", {headers: {token:token}, admin:admin})
-            .then(response => {
-              setExam(response.data)
-            })
-        }
-        getExam()
-      }, [])
+const Exam = (props) => {
+  let { path, url } = useRouteMatch()
+  const host = props.host
+  const [exam, setExam] = useState([])
+  const [examID, setExamID] = useState()
+  const [examDialogOpen, setExamDialogOpen] = useState(false)
+  const [examName, setExamName] = useState("")
+  const token = localStorage.token
+  const admin = localStorage.admin
+  useEffect(() => {
 
-      const onClick = () => {
-        setNewExamDialogOpen(true)
-      }
-
-      const handleClose = () => {
-        setNewExamDialogOpen(false)
-        if(examName)
-          addExam(examName)
-      }
-      const addExam = async () => {
-        axios
-        .post(`http://localhost:5000/kayttajat`)  
-        //.post(`http://localhost:5000/lisaatentti/${examName}`)
-      }
+    const getExam = async () => {
+      console.log(props)
+      axios
+        .get(host + "/tentit", { headers: { token: token }, admin: admin })
+        .then(response => {
+          setExam(response.data)
+        })
+    }
+    getExam()
+  }, [])
 
 
-      if (exam.length < 1)
-        return <>loading...</>
-      return (
-        
-        <div className = "Exam-list">
-            <div>
-      {exam.map((item, index) =>
-    
-        <Button component={Link} to={`${url}/${item.id}`} key={uuid()} color="primary"
-        onClick={() => setExamID(item.id)} >
-                {item.nimi}</Button>
+  const handleClickOpen = () => {
+    console.log("huhuu")
+    setExamDialogOpen(true)
+  }
+
+  const handleClose = () => {
+    setExamDialogOpen(false)
+    if (examName)
+      addExam(examName)
+  }
+
+
+
+  if (exam.length < 1)
+    return <>loading...</>
+  return (
+
+    <div className="Exam-list">
+
+      <div>
+        {exam.map((item, index) =>
+
+          <Button component={Link} to={`${url}/${item.id}`} key={uuid()} color="primary"
+            onClick={() => setExamID(item.id)} >
+            {item.nimi}</Button>
         )}
 
 
 
         <Button color="primary"
-                onClick={onClick}
-                >
-                  +
+          onClick={handleClickOpen}
+        >
+          +
                   </Button>
-                  
-                  <NewExamDialog examName={examName} open={newExamDialogOpen} onClose={handleClose}></NewExamDialog>
-        
-        </div>
-        
-        <Switch>
-            <Route exact path = {path}>
-            </Route>
-            <Route path={`${path}/:id`}>
-            <Kysymykset examID={examID} host={host}></Kysymykset>
-            </Route>
-        </Switch>
+        <ExamDialog examName={examName} open={examDialogOpen} onClose={handleClose}></ExamDialog>
 
 
-        
-        </div>
-      )
+      </div>
+
+      <Switch>
+        <Route exact path={path}>
+        </Route>
+        <Route path={`${path}/:id`}>
+          <Kysymykset examID={examID} host={host}></Kysymykset>
+        </Route>
+      </Switch>
+
+
+
+    </div>
+  )
+}
+export default Exam
+
+function ExamDialog(props) {
+  const { open, onClose, examName } = props
+
+  const handleClose = () => {
+    onClose(examName)
   }
-  export default Exam
 
-  function NewExamDialog(props){
-    const {open, onClose, examName} = props
+  return (
+    <div>
+    <Dialog open={open} onClose={handleClose()} >
+      <DialogTitle id="newExamDialog">{
+        <FormattedMessage
 
-    const handleClose = () => {
-      onClose(examName)
-    }
-
-    return (
-      <Dialog onClose={handleClose()} open={open}>
-      <DialogTitle id="newExamDialog">
-      <FormattedMessage
- 
-        id="new-exam-title"
-        description="Translation for new exam input"
-></FormattedMessage>
+          id="new-exam-title"
+          description="Translation for new exam input"
+        ></FormattedMessage>}
       </DialogTitle>
+      <DialogContent>
       <TextField key={uuid()}
-       
+
       >teksti</TextField>
-      <Button >
-          Uus tentti
+      </DialogContent>
+      <DialogActions><Button onClick={handleClose()}>
+        Uus tentti
       </Button>
-      <Button>Peruuta</Button>
+        <Button>Peruuta</Button>
+      </DialogActions>
     </Dialog>
-    )
-  }
+    </div>
+  )
+}
