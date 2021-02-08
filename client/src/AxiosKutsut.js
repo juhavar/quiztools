@@ -22,18 +22,45 @@ axios.defaults.headers = {
   admin: localStorage.admin
 }
 
-/* export async function getExam() {
+export async function getExam() {
+  console.log("kukkuu")
   try {
     axios
       .get(host + "/tentit")
       .then(response => {
+        console.log("response.data", response.data)
         return response.data
       })
   }
   catch(exception){
     console.log("Error")
   }
-} */
+}
+
+export async function login(userData) {
+  
+  try {
+    let result = 
+    await axios
+      .post(host + `/login/`, userData)
+    return result.data
+  }
+  catch (exception){
+    return exception
+  }
+}
+
+export async function register(userData) {
+  try {
+    let result = 
+    await
+        axios
+            .post(host + `/register/${userData.etunimi}/${userData.sukunimi}/${userData.email}/${userData.salasana}/${userData.admin}`)
+
+} catch (e) {
+    console.log("registration error")
+}
+}
 
 export async function addExam(examName) {
   try {
@@ -106,7 +133,7 @@ export async function deleteQuestion(questionID) {
 export async function addAnswer(examID, questionID) {
   try {
     axios
-      .post(host + `/lisaavastaus/${examID}/${questionID}/' '/false`)
+      .post(host + `/lisaavastaus/${questionID}/' '/false`)
     //setExam(examID)
   }
   catch (exception) {
@@ -117,7 +144,7 @@ export async function changeText(examID, questionID, item, event) {
   //setQuestionID(props.questionID)
   try {
     axios
-      .put(host + `/muokkaavastaus/${examID}/${questionID}/${item.id}/${event.target.value}/${item.oikea}/`)
+      .put(host + `/muokkaavastaus/${questionID}/${item.id}/${event.target.value}/${item.oikea}/`)
   }
   catch (exception) {
     console.log("ei muutettu vastauksen tekstiä")

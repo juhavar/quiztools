@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require("express")
 var cors = require("cors")
 var path = require('path')
@@ -177,10 +178,10 @@ app.put('/muokkaakysymys/:tentti_id/:kysymys_id/:uusikysymysteksti'
 
 // vastaus (ok)
 
-app.put('/muokkaavastaus/:id/:kysymys_id/:vastaus_id/:vastausteksti/:oikein'
+app.put('/muokkaavastaus/:kysymys_id/:vastaus_id/:vastausteksti/:oikein'
         ,[authenticateToken, adminCheck],  (req, res, next) =>{
-  db.query('UPDATE vastaukset SET vastausteksti=$4, oikea=$5 WHERE tentti_id=$1 AND kysymys_id=$2 AND id=$3',
-     [req.params.id, req.params.kysymys_id, req.params.vastaus_id,
+  db.query('UPDATE vastaukset SET vastausteksti=$3, oikea=$4 WHERE kysymys_id=$1 AND id=$2',
+     [req.params.kysymys_id, req.params.vastaus_id,
       req.params.vastausteksti, req.params.oikein], (err, result) => {
     if (err) {
       return next(err)
@@ -196,7 +197,7 @@ app.put('/muokkaavastaus/:id/:kysymys_id/:vastaus_id/:vastausteksti/:oikein'
 // luodaan tentti (ok)
 
 app.post('/lisaatentti/:nimi', [authenticateToken, adminCheck]
-        , [authenticateToken, adminCheck],  (req, res, next) => {
+        , (req, res, next) => {
   db.query('INSERT INTO tentit(nimi) VALUES ($1) RETURNING id',
     [req.params.nimi], (result, err) => {
       if (err) {
@@ -227,10 +228,10 @@ app.post('/lisaakysymys/:tentti_id/:teksti', [authenticateToken, adminCheck], (r
 
 // luodaan vastaus
 
-app.post('/lisaavastaus/:tentti_id/:kysymys_id/:vastausteksti/:oikein',
+app.post('/lisaavastaus/:kysymys_id/:vastausteksti/:oikein',
          [authenticateToken, adminCheck],  (req, res, next) => {
-  db.query('INSERT INTO vastaukset(tentti_id, kysymys_id, vastausteksti, oikea) VALUES ($1, $2, $3, $4)',
-    [req.params.tentti_id, req.params.kysymys_id, req.params.vastausteksti, req.params.oikein], (err) => {
+  db.query('INSERT INTO vastaukset(kysymys_id, vastausteksti, oikea) VALUES ($1, $2, $3)',
+    [req.params.kysymys_id, req.params.vastausteksti, req.params.oikein], (err) => {
       if (err) {
         return next(err)
       }

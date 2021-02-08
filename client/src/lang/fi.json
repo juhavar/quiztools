@@ -23,9 +23,22 @@
 	"new-question": "Lisätty uusi kysymys",
 	"new-answer": "Lisätty uusi vastaus",
 
-	"delete-exam": "Tentti poistettu",
-	"delete-question": "Kysymys poistettu",
-	"delete-answer": "Vastaus poistettu",
+	"delete-exam": "Poista tentti",
+	"delete-question": "Poista kysymys",
+	"delete-answer": "Poista vastaus",
 
-	"new-exam-title": "Kirjoita uuden tentin nimi"
+	"delete-exam-text": "Haluatko varmasti poistaa tentin?",
+	"delete-question-text": "Haluatko varmasti poistaa kysymyksen?",
+	"delete-answer-text": "Poista kysymys?",
+
+	"delete-warning": "Huomio! Toimintoa ei voi peruuttaa!",
+
+	"exam-deleted": "Tentti poistettu",
+	"question-deleted": "Kysymys poistettu",
+	"answer-deleted": "Vastaus poistettu",
+
+	"new-exam-title": "Kirjoita uuden tentin nimi",
+
+	"alert-confirm": "Poista",
+	"alert-cancel": "Peruuta"
 }

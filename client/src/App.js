@@ -54,9 +54,9 @@ function App(props) {
   const exams = [];
 
 
-  /* tässä kohtaa oli totetutus websocket-pohjaisille ilmoituksille, mutta
-   ne ei toimi Herokussa joten kommentoitu pois
-  const [alertOpen, setAlertOpen] = useState(false)
+/*   tässä kohtaa oli totetutus websocket-pohjaisille ilmoituksille, mutta
+   ne ei toimi Herokussa joten kommentoitu pois */
+/*   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
   const client = new W3CWebSocket(`ws://${host}:3001`)
 
@@ -80,13 +80,13 @@ useEffect(() => {
 function showAlert(e) {
     
  
-}
-  */
+} */
+ 
 
   useEffect(() => {
     setToken(localStorage.getItem('token'))
 
-    if (token == null) {
+    if (token === null) {
       setUserLoggedIn(false)
     }
     else
@@ -111,15 +111,16 @@ function showAlert(e) {
     setToken(null)
     setUserLoggedIn(false)
   }
-  /* 
-    function handleClose(event, reason){
+  
+  // websocket-viesti-ikkunan sulkija
+/*     function handleClose(event, reason){
       if (reason === 'clickaway') {
         return;
       } 
   
       setAlertOpen(false);
-    }
-  */
+    } */
+ 
   function HomeIcon(props) {
     return (
       <SvgIcon {...props}>
@@ -212,8 +213,8 @@ function showAlert(e) {
         </div>
       </Router>
 
-      {/* 
-      ilmoitusikkuna
+      {/* {
+      
       
       <div>
       {console.log("Renderöinnin viesti:", alertMessage)}
@@ -228,8 +229,8 @@ function showAlert(e) {
               description="Translations for alert messages"
             ></FormattedMessage></Alert>
     </Snackbar> </div> 
+ }
  */}
-
     </div>
 
 

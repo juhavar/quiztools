@@ -25,13 +25,16 @@ exports.login = async (req, res, next) =>{
                                          etunimi: kayttaja.rows[0].etunimi, 
                                          sukunimi: kayttaja.rows[0].sukunimi, 
                                          admin: kayttaja.rows[0].admin}, 
-                                         'TOP_SECRET',
+                                         process.env.AUTH_KEY,
                                          {expiresIn: '240000s'} )
                 //console.log("token tehty")
                 res.header("token",token, "admin", kayttaja.rows[0].admin).send({"token": token, "admin": kayttaja.rows[0].admin})
                 //res.send("logattu sissää")
             }
-            else return (res.sendStatus(401))
+            else{
+                console.log("virhe kirjautumisessa")
+                return res.sendStatus(401)
+            } 
         })
 
     }catch{

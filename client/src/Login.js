@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
+import { login } from './AxiosKutsut';
 
 const Login = (props) => {
 
@@ -26,17 +27,20 @@ const Login = (props) => {
         try {
             e.preventDefault()
 
-            const response =
-            await
+            let response = await login(userData)
+
+            // siirretty
+            /* await
                 axios
-                    .post(props.host + `/login/`,userData)
-            
-            console.log(response.data)
-            const token = await response.data
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('admin', response.data.admin)
+                    .post(props.host + `/login/`, userData)
+             */
+            console.log(response)
+            let token = await response
+            localStorage.setItem('token', response.token)
+            localStorage.setItem('admin', response.admin)
             history.push('/')
             //setUserLogin(true)
+            
             window.location.reload()
             
         } catch (e) {

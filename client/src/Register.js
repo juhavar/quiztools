@@ -3,6 +3,7 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { register } from './AxiosKutsut';
 
 const Register = () => {
     const [userData, setUserData] = useState({
@@ -18,8 +19,8 @@ const Register = () => {
     }
     const onSubmit = async (e) => {
         e.preventDefault()
-
-        try {
+        register(userData)
+        /* try {
 
             await
                 axios
@@ -27,7 +28,7 @@ const Register = () => {
 
         } catch (e) {
             console.log("registration error")
-        }
+        } */
     }
     return (
         <div>

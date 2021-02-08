@@ -42,18 +42,21 @@ const Exam = (props) => {
         })
     }
     getExam()
-  }, [])
+  }, [examID])
 
 
   const handleClickOpen = () => {
     console.log("huhuu")
+
     setExamDialogOpen(true)
   }
 
-  const handleClose = () => {
+  const handleClose = (examName) => {
     setExamDialogOpen(false)
+    console.log("dialogi kiinni")
     if (examName)
       addExam(examName)
+
   }
 
 
@@ -79,8 +82,9 @@ const Exam = (props) => {
         >
           +
                   </Button>
-        <ExamDialog examName={examName} open={examDialogOpen} onClose={handleClose}></ExamDialog>
+        
 
+        {/* <ExamDialog examName={examName} open={examDialogOpen} onClose={handleClose}></ExamDialog> */}
 
       </div>
 
@@ -99,7 +103,7 @@ const Exam = (props) => {
 }
 export default Exam
 
-function ExamDialog(props) {
+/* function ExamDialog(props) {
   const { open, onClose, examName } = props
 
   const handleClose = () => {
@@ -108,25 +112,26 @@ function ExamDialog(props) {
 
   return (
     <div>
-    <Dialog open={open} onClose={handleClose()} >
-      <DialogTitle id="newExamDialog">{
+      {console.log("examdialog")}
+      <Dialog open={open} onClose={handleClose} >
+        <DialogTitle id="newExamDialog">{
         <FormattedMessage
 
           id="new-exam-title"
           description="Translation for new exam input"
         ></FormattedMessage>}
-      </DialogTitle>
-      <DialogContent>
-      <TextField key={uuid()}
+        </DialogTitle>
+        <DialogContent>
+          <TextField key={uuid()}
 
-      >teksti</TextField>
-      </DialogContent>
-      <DialogActions><Button onClick={handleClose()}>
-        Uus tentti
+          >{examName}</TextField>
+        </DialogContent>
+        <DialogActions><Button onClick={handleClose}>
+          Uus tentti
       </Button>
-        <Button>Peruuta</Button>
-      </DialogActions>
-    </Dialog>
+          <Button onClick={handleClose()}>Peruuta</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
-}
+} */

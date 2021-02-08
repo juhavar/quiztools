@@ -23,10 +23,23 @@
 	"new-question": "New question added",
 	"new-answer": "New answer added",
 
-	"delete-exam": "Exam deleted",
-	"delete-question": "Question deleted",
-	"delete-answer": "Answer deleted",
+	"delete-exam": "Delete exam",
+	"delete-question": "Delete question",
+	"delete-answer": "Delete answer",
 
-	"new-exam-title": "Type new exam name"
+	"delete-exam-text": "Are you sure you want to delete this exam?",
+	"delete-question-text": "Are you sure you want to delete this question?",
+	"delete-answer-text": "Delete answer?",
+
+	"delete-warning": "Warning this operation is permanent!",
+
+	"exam-deleted": "Exam deleted",
+	"question-deleted": "Question deleted",
+	"answer-deleted": "Answer deleted",
+
+	"new-exam-title": "Type new exam name",
+
+	"alert-confirm": "Confirm",
+	"alert-cancel": "Cancel"
 	
 }

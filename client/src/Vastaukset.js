@@ -66,7 +66,7 @@ import { changeText, handleCheck, deleteAnswer } from './AxiosKutsut'
             description="Answer"
         ></FormattedMessage>}
           variant="outlined"
-          style={{width:'45%'}}
+          style={{width:'90%'}}
           defaultValue={item.vastausteksti}
           onBlur={(event) => changeText(props.examID, props.questionID, item, event)}>
         </TextField>

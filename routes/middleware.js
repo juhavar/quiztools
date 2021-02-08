@@ -12,7 +12,7 @@ exports.authenticateToken = async function(req, res, next) {
         console.log("Ei löytyny tokenia")
         return res.sendStatus(401) // 401 unauthorized jos tokenia ei o
     }
-    jwt.verify(token, 'TOP_SECRET', (err, user) => {
+    jwt.verify(token, process.env.AUTH_KEY, (err, user) => {
         
         //console.log("user, auth.js", user)
         if(err){

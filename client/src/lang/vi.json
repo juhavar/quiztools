@@ -23,9 +23,22 @@
 	"new-question": "Đã thêm câu hỏi mới",
 	"new-answer": "Đã thêm câu trả lời mới",
 
-	"delete-exam": "Đã xóa bài kiểm tra",
-	"delete-question": "Đã xóa câu hỏi",
-	"delete-answer": "Đã xóa câu trả lời",
+	"delete-exam": "Xóa bài kiểm tra",
+	"delete-question": "Xóa câu hỏi",
+	"delete-answer": "Xóa câu trả lời", 
 
-	"new-exam-title": "Nhập tên bài kiểm tra mới"
+	"exam-deleted": "Đã xóa bài kiểm tra",
+	"question-deleted": "Đã xóa câu hỏi",
+	"answer-deleted": "Đã xóa câu trả lời",
+
+	"delete-exam-text": "Bạn có chắc chắn muốn xóa bài kiểm tra này không?",
+	"delete-question-text": "Bạn có chắc chắn muốn xóa câu hỏi này không?",
+	"delete-answer-text": "Xóa câu trả lời?",
+
+	"delete-warning": "Cảnh báo thao tác này là vĩnh viễn!", 
+
+	"new-exam-title": "Nhập tên bài kiểm tra mới",
+
+	"alert-confirm": "Xác nhận",
+	"alert-cancel": "Hủy"
 }

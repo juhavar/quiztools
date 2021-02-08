@@ -7,6 +7,13 @@ import axios from 'axios';
 import Vastaukset from './Vastaukset'
 import uuid from 'react-uuid';
 import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,7 +22,7 @@ import {
   useRouteMatch,
   useParams
 } from "react-router-dom";
-import { addQuestion, changeQText, deleteQuestion, addAnswer} from './AxiosKutsut'
+import { addQuestion, changeQText, deleteQuestion, addAnswer, deleteExam } from './AxiosKutsut'
 
 
 const Kysymykset = (props) => {
@@ -24,9 +31,11 @@ const Kysymykset = (props) => {
   //const token = localStorage.token
   const [questions, setQuestions] = useState([])
   const [exam, setExam] = useState(0)
-  const [questionText, setQuestionText] = useState("")
+  const [questionID, setQuestionID] = useState(null)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertText, setAlertText] = useState("")
 
-  
+
   useEffect(() => {
     const getQuestion = async () => {
       //console.log("http://localhost:5000/kysymykset/" + props.examID)
@@ -39,14 +48,55 @@ const Kysymykset = (props) => {
     getQuestion()
   }, [props.examID, exam])
 
-/*   const qClickHandler = (event) => {
-    console.log(questionText, event.target.value.toString())
-    setQuestionText(event.target.value.toString())
-  } */
+  /*   const qClickHandler = (event) => {
+      console.log(questionText, event.target.value.toString())
+      setQuestionText(event.target.value.toString())
+    } */
+
+  const deletionHandler = (item_type, item_id) => {
+    
+    switch (item_type) {
+      case 'exam': {
+        setAlertText('delete-exam')
+        //deleteExam(item_id)
+        break;
+      }
+      case 'question': {
+        setAlertText('delete-question')
+        setQuestionID(item_id)
+        break;
+
+      }
+
+      default:
+        throw new Error()
+    }
+    setAlertOpen(true)
+  }
+
+  const handleClose = () => {
+    setAlertOpen(false)
+  }
+
+  const confirmDelete = () => {
+    switch (alertText) {
+      case 'delete-exam': {
+        deleteExam(props.examID)
+        break;
+      }
+      case 'delete-question': {
+        deleteQuestion(questionID)
+        break;
+      }
+      default: {
+        throw new Error()
+      }
+    }
+    
+    setAlertOpen(false)
+  }
 
 
-
-  
 
   if (questions.length < 1) {
     return <div>
@@ -66,13 +116,17 @@ const Kysymykset = (props) => {
     return (
 
       <div className="Question-list">
-        <Paper style={{ width: '75%' }}>
+        <Paper style={{ width: '95%' }}>
           <div>
+
             {setExam[props.e]}
+
             {questions.map((item, index) =>
 
+
+
               // tekstikentästä poistuminen aiheuttaa verkkoliikennettä vaikkei mitään muuteta
-              // kysymyksen poisto puuttuu (DELETE CASCADE?)
+              
               <div className="Question">
                 <TextField
                   key={uuid()}
@@ -81,14 +135,14 @@ const Kysymykset = (props) => {
                     defaultMessage="Kysymys"
                     description="Question"
                   ></FormattedMessage>}
-                  style={{ width: '50%' }}
+                  style={{ width: '90%' }}
                   variant="outlined"
                   defaultValue={item.teksti}
-                 /*  onClick={(event) => qClickHandler(event)} */
+                  /*  onClick={(event) => qClickHandler(event)} */
                   onBlur={(event) => changeQText(props.examID, item.id, event)} ></TextField>
                 <DeleteIcon
                   key={uuid()}
-                  onClick={(event) => deleteQuestion(item)}>
+                  onClick={(event) => deletionHandler('question',item)}>
 
                 </DeleteIcon>
                 <Vastaukset host={host} key={uuid()} examID={props.examID} questionID={item.id}></Vastaukset>
@@ -112,6 +166,53 @@ const Kysymykset = (props) => {
                 defaultMessage="Lisää kysymys"
                 description="Add question"
               ></FormattedMessage>}</Button>
+          </div>
+          <div>
+            <Button color="primary"
+              key={uuid()}
+              onClick={(event) => deletionHandler('exam', props.examID)}>{<FormattedMessage
+                id="delete-exam"
+                defaultMessage="Poista tentti"
+                description="Delete exam"
+              ></FormattedMessage>}</Button>
+
+            <Dialog
+              open={alertOpen}
+              close={handleClose}
+            >
+
+              <DialogTitle id="alert-dialog-title">
+              {<FormattedMessage
+                id={alertText}
+            
+              ></FormattedMessage>}
+                </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                {<FormattedMessage
+                id="delete-warning"
+                defaultMessage="Huomio! Toiminto on peruuttamaton!"
+                description="Confirm and delete exam"
+              ></FormattedMessage>}
+          </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={confirmDelete} color="primary">{<FormattedMessage
+                id="alert-confirm"
+                defaultMessage="Poista tentti"
+                description="Confirm and delete exam"
+              ></FormattedMessage>}
+                  
+          </Button>
+                <Button onClick={handleClose} color="primary" autoFocus >{<FormattedMessage
+                id="alert-cancel"
+                defaultMessage="Peruuta"
+                description="Cancel deletion"
+              ></FormattedMessage>}
+                  
+          </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </Paper>
       </div>

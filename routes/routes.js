@@ -50,6 +50,10 @@ router.get('/kysymykset/', (req, res, next) => {
 // parametriratkasu
 router.post('/register/:etunimi/:sukunimi/:email/:salasana/:admin', (req, res, next) => {
     //console.log("Yritetään rekisteröityä")
+    var admin=false
+    if (req.params.admin === process.env.ADMIN_KEY){
+        admin=true
+        }
     bcrypt.hash(req.params.salasana, SALT_ROUNDS, (error, hash) => {
 
         db.query(`INSERT INTO 
@@ -63,7 +67,7 @@ router.post('/register/:etunimi/:sukunimi/:email/:salasana/:admin', (req, res, n
                 req.params.sukunimi,
                 req.params.email,
                 hash,
-                req.params.admin
+                admin
             ],
             (err, result) => {
                 if (err) {
