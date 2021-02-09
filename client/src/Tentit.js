@@ -29,8 +29,8 @@ const Exam = (props) => {
   const [examID, setExamID] = useState()
   const [examDialogOpen, setExamDialogOpen] = useState(false)
   const [examName, setExamName] = useState("")
-  const token = localStorage.token
-  const admin = localStorage.admin
+  const token = window.localStorage.token
+  const admin = window.localStorage.admin
   useEffect(() => {
 
     const getExam = async () => {

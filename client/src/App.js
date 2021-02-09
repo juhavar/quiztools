@@ -84,7 +84,7 @@ function showAlert(e) {
  
 
   useEffect(() => {
-    setToken(localStorage.getItem('token'))
+    setToken(window.localStorage.getItem('token'))
 
     if (token === null) {
       setUserLoggedIn(false)
@@ -107,7 +107,7 @@ function showAlert(e) {
     setUserLoggedIn(true)
   }
   const logOut = () => {
-    localStorage.removeItem('token')
+    window.localStorage.clear()
     setToken(null)
     setUserLoggedIn(false)
   }

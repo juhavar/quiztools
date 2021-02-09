@@ -18,8 +18,8 @@ switch (process.env.NODE_ENV) {
 
 axios.defaults.headers = {
   'Content-type': 'application/json',
-  token: localStorage.token,
-  admin: localStorage.admin
+  token: window.localStorage.token,
+  admin: window.localStorage.admin
 }
 
 export async function getExam() {

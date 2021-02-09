@@ -36,8 +36,8 @@ const Login = (props) => {
              */
             console.log(response)
             let token = await response
-            localStorage.setItem('token', response.token)
-            localStorage.setItem('admin', response.admin)
+            window.localStorage.setItem('token', response.token)
+            window.localStorage.setItem('admin', response.admin)
             history.push('/')
             //setUserLogin(true)
             
