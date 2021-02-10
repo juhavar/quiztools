@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import UserVastaukset from './UserVastaukset'
+import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 import {
   BrowserRouter as Router,
   Switch,
@@ -43,6 +44,11 @@ const UserKysymykset = (props) => {
         {questions.map((item, index) =>
           <div>
             <TextField
+              label={<FormattedMessage
+                id="question"
+                defaultMessage="Kysymys"
+                description="Question"
+            ></FormattedMessage>}
               variant="outlined"
               value={item.teksti}
               style={{ width: '91%' }}

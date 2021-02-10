@@ -31,9 +31,10 @@ const Exam = (props) => {
   const [examDialogOpen, setExamDialogOpen] = useState(false)
   const [examName, setExamName] = useState("")
   const token = window.localStorage.token
-  const admin = window.localStorage.admin
+  let admin = window.localStorage.admin
+  
   useEffect(() => {
-
+    
     const getExam = async () => {
       console.log(props)
       axios
@@ -60,7 +61,17 @@ const Exam = (props) => {
 
   }
 
+  const userMode = () => {
+   if (window.localStorage.admin === "true") {
 
+      return <Kysymykset examID={examID} host={host}></Kysymykset>
+   }
+    else{
+      
+       return <UserKysymykset examID={examID} host={host}></UserKysymykset>
+    }
+    
+  } 
 
   if (exam.length < 1)
     return <>loading...</>
@@ -93,12 +104,9 @@ const Exam = (props) => {
       <Switch>
         <Route exact path={path}>
         </Route>
-        <Route path={`${path}/:id`}>
+        <Route path={`${path}/:id`} component={userMode}>
 
-          {!window.localStorage.admin || !window.localStorage.admin  === "true" ?
-            <Kysymykset examID={examID} host={host}></Kysymykset>
-            : <UserKysymykset examID={examID} host={host}></UserKysymykset>
-          }
+          
         </Route>
       </Switch>
 
