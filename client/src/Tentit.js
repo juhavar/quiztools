@@ -32,9 +32,9 @@ const Exam = (props) => {
   const [examName, setExamName] = useState("")
   const token = window.localStorage.token
   const admin = window.localStorage.admin
-  
+
   useEffect(() => {
-    
+
     const getExam = async () => {
       console.log(props)
       axios
@@ -61,17 +61,17 @@ const Exam = (props) => {
 
   }
 
-  const userMode = () => {
-   if (window.localStorage.admin === ("true" || true)) {
-
-      return <Kysymykset examID={examID} host={host}></Kysymykset>
-   }
-    else{
+  /*   const userMode = () => {
+     if (window.localStorage.admin === ("true" || true)) {
+  
+        return <Kysymykset examID={examID} host={host}></Kysymykset>
+     }
+      else{
+        
+         return <UserKysymykset examID={examID} host={host}></UserKysymykset>
+      }
       
-       return <UserKysymykset examID={examID} host={host}></UserKysymykset>
-    }
-    
-  } 
+    }  */
 
   if (exam.length < 1)
     return <>loading...</>
@@ -104,9 +104,16 @@ const Exam = (props) => {
       <Switch>
         <Route exact path={path}>
         </Route>
-        <Route path={`${path}/:id`} component={userMode}>
+        <Route path={`${path}/:id`} >
+          {window.localStorage.admin === ("true" || true) ?
 
-          
+            <Kysymykset examID={examID} host={host}></Kysymykset>
+
+            :
+
+            <UserKysymykset examID={examID} host={host}></UserKysymykset>
+          }
+
         </Route>
       </Switch>
 
