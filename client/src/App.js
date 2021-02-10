@@ -84,7 +84,7 @@ function showAlert(e) {
  
 
   useEffect(() => {
-    //setToken(window.localStorage.getItem('token'))
+    setToken(window.localStorage.getItem('token'))
     
     if (token === null) {
       setUserLoggedIn(false)
