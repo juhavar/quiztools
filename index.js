@@ -15,7 +15,7 @@ const { authenticateToken, adminCheck } = require('./routes/middleware')
 const db = require('./db')
 
 //https://expressjs.com/en/resources/middleware/cors.html
-// pelkkä localhost:3000 läpi
+
 app.use(cors({
   origin: 'http://localhost:3000' || 'http://localhost:5000' || 
   'https://jv-quiztool.herokuapp.com',
@@ -48,7 +48,8 @@ wss.on('connection', (ws) => {
 const jwt = require('jsonwebtoken')
 
 const Logger = (req, res, next) => {
-  console.log(`req.headers.url: ${req.url} 
+  console.log(`logger!
+              req.headers.url: ${req.url} 
               req.headers.token: ${req.headers['token']}
               req.headers.admin: ${req.headers['admin']}`)
   next()
@@ -124,7 +125,7 @@ app.get('/tentit/:id', (req, res, next) => {
 
 // hakee tentin kysymykset
 app.get('/kysymykset/:tentti_id', (req, res, next) => {
-  console.log(req.params.id)
+  console.log("req.params.id", req.params.id)
   db.query('SELECT * FROM kysymykset WHERE tentti_id = $1 ORDER BY id', [req.params.tentti_id], (err, result) => {
     if (err) {
       return next(err)
@@ -135,6 +136,7 @@ app.get('/kysymykset/:tentti_id', (req, res, next) => {
 
 // hakee kysymykseen vastausvaihtoehdot (ok)
 app.get('/vastaukset/:kysymys_id',  (req, res, next) => {
+  console.log("haetaan vastauksia")
   db.query('SELECT * FROM vastaukset WHERE kysymys_id = $1 ORDER BY id', [req.params.kysymys_id], (err, result) => {
     if (err) {
       return next(err)
@@ -176,7 +178,7 @@ app.put('/muokkaakysymys/:tentti_id/:kysymys_id/:uusikysymysteksti'
 
 })
 
-// vastaus (ok)
+// vastauksen muokkaus (admin) (ok)
 
 app.put('/muokkaavastaus/:kysymys_id/:vastaus_id/:vastausteksti/:oikein'
         ,[authenticateToken, adminCheck],  (req, res, next) =>{
@@ -190,8 +192,13 @@ app.put('/muokkaavastaus/:kysymys_id/:vastaus_id/:vastausteksti/:oikein'
     messageClients("answer-changed")
     res.send("Vastauksen muokkaus ok." )
   })
-
 })
+
+/* app.put('/kayttajanvastaus/:vastaus_id/:kayttaja_id/:vastaus',
+      [authenticateToken], (req, res, next) =>{
+        db.query('UPDATE kayttajan_vastaukset SET kayttajan_vastaus=$3 WHERE vastaus_id=$1')
+      })
+ */
   //------------- L U O M I S E T
 
 // luodaan tentti (ok)

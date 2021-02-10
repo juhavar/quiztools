@@ -34,7 +34,7 @@ const Kysymykset = (props) => {
   const [questionID, setQuestionID] = useState(null)
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertText, setAlertText] = useState("")
-
+  const adminMode = window.localStorage.admin // 
 
   useEffect(() => {
     const getQuestion = async () => {
@@ -46,7 +46,7 @@ const Kysymykset = (props) => {
         })
     }
     getQuestion()
-  }, [props.examID, exam])
+  }, [props.examID, exam, setExam, setQuestions])
 
   /*   const qClickHandler = (event) => {
       console.log(questionText, event.target.value.toString())
@@ -54,7 +54,7 @@ const Kysymykset = (props) => {
     } */
 
   const deletionHandler = (item_type, item_id) => {
-    
+
     switch (item_type) {
       case 'exam': {
         setAlertText('delete-exam')
@@ -92,7 +92,7 @@ const Kysymykset = (props) => {
         throw new Error()
       }
     }
-    
+
     setAlertOpen(false)
   }
 
@@ -116,7 +116,7 @@ const Kysymykset = (props) => {
     return (
 
       <div className="Question-list">
-        <Paper style={{ width: '95%' }}>
+        <Paper style={{ width: '95%', maxHeight: '95%', overflow: 'auto' }}>
           <div>
 
             {setExam[props.e]}
@@ -126,7 +126,7 @@ const Kysymykset = (props) => {
 
 
               // tekstikentästä poistuminen aiheuttaa verkkoliikennettä vaikkei mitään muuteta
-              
+
               <div className="Question">
                 <TextField
                   key={uuid()}
@@ -138,21 +138,24 @@ const Kysymykset = (props) => {
                   style={{ width: '90%' }}
                   variant="outlined"
                   defaultValue={item.teksti}
+                  inputProps={{ readOnly: !adminMode }}
                   /*  onClick={(event) => qClickHandler(event)} */
                   onBlur={(event) => changeQText(props.examID, item.id, event)} ></TextField>
                 <DeleteIcon
                   key={uuid()}
-                  onClick={(event) => deletionHandler('question',item)}>
+                  onClick={(event) => deletionHandler('question', item)}>
 
                 </DeleteIcon>
-                <Vastaukset host={host} key={uuid()} examID={props.examID} questionID={item.id}></Vastaukset>
+                <Vastaukset host={host} key={uuid()} examID={props.examID} questionID={item.id} userMode={adminMode}></Vastaukset>
                 <div id={item.index}>
-                  <Button key={uuid()} color="primary"
+                  {!adminMode ? "" : <Button key={uuid()} color="primary"
                     onClick={() => addAnswer(props.examID, item.id)}>{<FormattedMessage
                       id="add-answer"
                       defaultMessage="Lisää vastaus"
                       description="Add answer"
                     ></FormattedMessage>}</Button>
+
+                  }
                 </div>
               </div>
             )}
@@ -182,35 +185,35 @@ const Kysymykset = (props) => {
             >
 
               <DialogTitle id="alert-dialog-title">
-              {<FormattedMessage
-                id={alertText}
-            
-              ></FormattedMessage>}
-                </DialogTitle>
+                {<FormattedMessage
+                  id={alertText}
+
+                ></FormattedMessage>}
+              </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                {<FormattedMessage
-                id="delete-warning"
-                defaultMessage="Huomio! Toiminto on peruuttamaton!"
-                description="Confirm and delete exam"
-              ></FormattedMessage>}
-          </DialogContentText>
+                  {<FormattedMessage
+                    id="delete-warning"
+                    defaultMessage="Huomio! Toiminto on peruuttamaton!"
+                    description="Confirm and delete exam"
+                  ></FormattedMessage>}
+                </DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button onClick={confirmDelete} color="primary">{<FormattedMessage
-                id="alert-confirm"
-                defaultMessage="Poista tentti"
-                description="Confirm and delete exam"
-              ></FormattedMessage>}
-                  
-          </Button>
+                  id="alert-confirm"
+                  defaultMessage="Poista tentti"
+                  description="Confirm and delete exam"
+                ></FormattedMessage>}
+
+                </Button>
                 <Button onClick={handleClose} color="primary" autoFocus >{<FormattedMessage
-                id="alert-cancel"
-                defaultMessage="Peruuta"
-                description="Cancel deletion"
-              ></FormattedMessage>}
-                  
-          </Button>
+                  id="alert-cancel"
+                  defaultMessage="Peruuta"
+                  description="Cancel deletion"
+                ></FormattedMessage>}
+
+                </Button>
               </DialogActions>
             </Dialog>
           </div>

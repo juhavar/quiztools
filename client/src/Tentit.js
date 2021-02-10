@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import uuid from 'react-uuid';
 import axios from 'axios';
 import Kysymykset from './Kysymykset'
+import UserKysymykset from './user/UserKysymykset'
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -76,13 +77,14 @@ const Exam = (props) => {
         )}
 
 
-
-        <Button color="primary"
-          onClick={handleClickOpen}
-        >
-          +
+        {window.localStorage.admin === "true" ?
+          <Button color="primary"
+            onClick={handleClickOpen}
+          >
+            +
                   </Button>
-        
+          : null}
+
 
         {/* <ExamDialog examName={examName} open={examDialogOpen} onClose={handleClose}></ExamDialog> */}
 
@@ -92,7 +94,11 @@ const Exam = (props) => {
         <Route exact path={path}>
         </Route>
         <Route path={`${path}/:id`}>
-          <Kysymykset examID={examID} host={host}></Kysymykset>
+
+          {!window.localStorage.admin || !window.localStorage.admin  === "true" ?
+            <Kysymykset examID={examID} host={host}></Kysymykset>
+            : <UserKysymykset examID={examID} host={host}></UserKysymykset>
+          }
         </Route>
       </Switch>
 
