@@ -20,7 +20,7 @@ const UserKysymykset = (props) => {
 
   useEffect(() => {
     const getQuestion = async () => {
-      
+      console.log("props.host", props.host, "props.examID", props.examID)
       axios
         .get(props.host + "/kysymykset/" + props.examID)
         .then(response => {
@@ -35,7 +35,7 @@ const UserKysymykset = (props) => {
   }
 
   if (questions.length < 1)
-    return <>loading...</>
+    return <>loading... q2</>
   return (
     <div className="Question list">
 

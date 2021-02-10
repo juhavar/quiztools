@@ -38,7 +38,7 @@ const Kysymykset = (props) => {
 
   useEffect(() => {
     const getQuestion = async () => {
-      //console.log("http://localhost:5000/kysymykset/" + props.examID)
+      console.log("props.host", props.host, "props.examID", props.examID)
       axios
         .get(host + "/kysymykset/" + props.examID)
         .then(response => {
