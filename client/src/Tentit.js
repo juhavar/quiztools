@@ -31,7 +31,7 @@ const Exam = (props) => {
   const [examDialogOpen, setExamDialogOpen] = useState(false)
   const [examName, setExamName] = useState("")
   const token = window.localStorage.token
-  let admin = window.localStorage.admin
+  const admin = window.localStorage.admin
   
   useEffect(() => {
     
@@ -62,7 +62,7 @@ const Exam = (props) => {
   }
 
   const userMode = () => {
-   if (window.localStorage.admin === "true") {
+   if (window.localStorage.admin === ("true" || true)) {
 
       return <Kysymykset examID={examID} host={host}></Kysymykset>
    }

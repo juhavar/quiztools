@@ -125,7 +125,7 @@ app.get('/tentit/:id', (req, res, next) => {
 
 // hakee tentin kysymykset
 app.get('/kysymykset/:tentti_id', (req, res, next) => {
-  console.log("req.params.id", req.params.id)
+  console.log("req.params.tentti_id", req.params.tentti_id)
   db.query('SELECT * FROM kysymykset WHERE tentti_id = $1 ORDER BY id', [req.params.tentti_id], (err, result) => {
     if (err) {
       return next(err)
