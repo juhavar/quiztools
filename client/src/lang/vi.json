@@ -40,5 +40,7 @@
 	"new-exam-title": "Nhập tên bài kiểm tra mới",
 
 	"alert-confirm": "Xác nhận",
-	"alert-cancel": "Hủy"
+	"alert-cancel": "Hủy",
+
+	"default-exam-name": "Thi"
 }

@@ -37,6 +37,19 @@ export async function getExam() {
   }
 }
 
+/* export async function getQuestionsList(examID) {
+  try {
+    axios
+        .get(host + "/kysymykset/" + examID)
+        .then(response => {
+          return response.data
+        })
+      }
+      catch(exception){
+
+      }
+} */
+
 export async function login(userData) {
   
   try {
@@ -70,6 +83,7 @@ export async function addExam(examName) {
   catch (exception) {
     console.log("Tentin lisääminen mättää")
   }
+  finally {return "ok"}
 }
 
 export async function changeExamName(examID, examName) {
@@ -100,7 +114,7 @@ export async function addQuestion(examID) {
   catch (exception) {
     console.log("Kysymyksen lisäys kosahti")
   }
-
+  finally {return "ok"}
 }
 
 export async function changeQText(examID, questionID, event) {

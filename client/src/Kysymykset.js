@@ -27,7 +27,7 @@ import { addQuestion, changeQText, deleteQuestion, addAnswer, deleteExam } from 
 
 const Kysymykset = (props) => {
   let { path, url } = useRouteMatch()
-  const host = props.host
+  //const host = props.host
   //const token = localStorage.token
   const [questions, setQuestions] = useState([])
   const [exam, setExam] = useState(0)
@@ -40,13 +40,14 @@ const Kysymykset = (props) => {
     const getQuestion = async () => {
       console.log("props.host", props.host, "props.examID", props.examID)
       axios
-        .get(host + "/kysymykset/" + props.examID)
+        .get(props.host + "/kysymykset/" + props.examID)
         .then(response => {
           setQuestions(response.data)
         })
     }
     getQuestion()
-  }, [props.examID, exam, setExam, setQuestions])
+    
+  }, [props.examID, exam, setExam, setQuestions, props.host])
 
   /*   const qClickHandler = (event) => {
       console.log(questionText, event.target.value.toString())
@@ -146,7 +147,7 @@ const Kysymykset = (props) => {
                   onClick={(event) => deletionHandler('question', item)}>
 
                 </DeleteIcon>
-                <Vastaukset host={host} key={uuid()} examID={props.examID} questionID={item.id} userMode={adminMode}></Vastaukset>
+                <Vastaukset host={props.host} key={uuid()} examID={props.examID} questionID={item.id} userMode={adminMode}></Vastaukset>
                 <div id={item.index}>
                   {!adminMode ? "" : <Button key={uuid()} color="primary"
                     onClick={() => addAnswer(props.examID, item.id)}>{<FormattedMessage

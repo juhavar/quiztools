@@ -40,5 +40,7 @@
 	"new-exam-title": "Kirjoita uuden tentin nimi",
 
 	"alert-confirm": "Poista",
-	"alert-cancel": "Peruuta"
+	"alert-cancel": "Peruuta",
+
+	"default-exam-name": "Tentti"
 }

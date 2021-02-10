@@ -40,6 +40,8 @@
 	"new-exam-title": "Type new exam name",
 
 	"alert-confirm": "Confirm",
-	"alert-cancel": "Cancel"
+	"alert-cancel": "Cancel",
+
+	"default-exam-name": "Exam"
 	
 }

@@ -28,7 +28,7 @@ const Exam = (props) => {
   const host = props.host
   const [exam, setExam] = useState([])
   const [examID, setExamID] = useState()
-  const [examDialogOpen, setExamDialogOpen] = useState(false)
+
   const [examName, setExamName] = useState("")
   const token = window.localStorage.token
   const admin = window.localStorage.admin
@@ -47,19 +47,6 @@ const Exam = (props) => {
   }, [examID])
 
 
-  const handleClickOpen = () => {
-    console.log("huhuu")
-
-    setExamDialogOpen(true)
-  }
-
-  const handleClose = (examName) => {
-    setExamDialogOpen(false)
-    console.log("dialogi kiinni")
-    if (examName)
-      addExam(examName)
-
-  }
 
   /*   const userMode = () => {
      if (window.localStorage.admin === ("true" || true)) {
@@ -72,6 +59,12 @@ const Exam = (props) => {
       }
       
     }  */
+
+    const newExamClick = () => {
+      var defaultExamName = "tentti"
+    
+      addExam(defaultExamName + examID)
+    }
 
   if (exam.length < 1)
     return <>loading...</>
@@ -90,15 +83,14 @@ const Exam = (props) => {
 
         {window.localStorage.admin === "true" ?
           <Button color="primary"
-            onClick={handleClickOpen}
+            onClick={newExamClick}
           >
             +
                   </Button>
           : null}
 
 
-        {/* <ExamDialog examName={examName} open={examDialogOpen} onClose={handleClose}></ExamDialog> */}
-
+        
       </div>
 
       <Switch>
@@ -123,36 +115,3 @@ const Exam = (props) => {
   )
 }
 export default Exam
-
-/* function ExamDialog(props) {
-  const { open, onClose, examName } = props
-
-  const handleClose = () => {
-    onClose(examName)
-  }
-
-  return (
-    <div>
-      {console.log("examdialog")}
-      <Dialog open={open} onClose={handleClose} >
-        <DialogTitle id="newExamDialog">{
-        <FormattedMessage
-
-          id="new-exam-title"
-          description="Translation for new exam input"
-        ></FormattedMessage>}
-        </DialogTitle>
-        <DialogContent>
-          <TextField key={uuid()}
-
-          >{examName}</TextField>
-        </DialogContent>
-        <DialogActions><Button onClick={handleClose}>
-          Uus tentti
-      </Button>
-          <Button onClick={handleClose()}>Peruuta</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  )
-} */
